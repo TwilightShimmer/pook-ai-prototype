@@ -1,0 +1,562 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>POOK AI App 体验原型</title>
+    <link rel="stylesheet" href="/static/former/pook-app.css?v=20260507b" />
+  </head>
+  <body>
+    <main class="pook-app" aria-label="POOK AI App 体验原型">
+      <header class="app-chrome">
+        <button class="round-button" id="backBtn" aria-label="返回">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <div class="title-plaque">
+          <span id="screenTitle">POOK AI 玩学星球</span>
+        </div>
+        <div class="topbar-actions">
+          <div class="gem-wallet" id="gemWallet" aria-label="当前宝石账户余额">
+            <span class="gem-wallet-icon" aria-hidden="true"></span>
+            <strong id="gemBalance">1280</strong>
+          </div>
+          <button class="round-button user-button" data-next="profile" aria-label="用户中心">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="app-dock" aria-label="App 主导航">
+        <button class="dock-item" data-next="home">首页</button>
+        <button class="dock-item active" data-next="course">课程</button>
+        <button class="dock-item" data-next="shop">商城</button>
+        <button class="dock-item" data-next="growth">成长</button>
+        <button class="dock-item" data-next="profile">我的</button>
+      </nav>
+
+      <section class="screen" data-screen="home">
+        <div class="marketing-layout">
+          <section class="campaign-hero">
+            <div class="campaign-copy">
+              <span>POOK 玩学活动</span>
+              <h1>超核计划北京站开启</h1>
+              <p>用 AI 老师、实体教具和小队挑战，把一次课程变成一场可以被记住的创造活动。</p>
+              <button class="cta-button" data-next="course">查看活动课程</button>
+            </div>
+            <div class="campaign-orbit">
+              <i></i><i></i><i></i>
+            </div>
+          </section>
+          <section class="campaign-grid">
+            <button class="campaign-card wuhan" data-next="home">
+              <span>线下空间</span>
+              <strong>POOK 智能创想空间落地武汉新华书店</strong>
+              <small>阅读、搭建、AI 互动课堂融合体验</small>
+            </button>
+            <button class="campaign-card lego" data-next="shop">
+              <span>套装更新</span>
+              <strong>乐高教具 AI 套装上新</strong>
+              <small>适配生命科学、工程设计和小队协作课程</small>
+            </button>
+            <button class="campaign-card course-new" data-next="course">
+              <span>新课加入</span>
+              <strong>动物旅馆系列开放预约</strong>
+              <small>4 节连续任务，完成后解锁主题勋章</small>
+            </button>
+            <button class="campaign-card festival" data-next="growth">
+              <span>作品展</span>
+              <strong>本月小小设计师作品展</strong>
+              <small>精选课堂作品、高光表达和小队故事</small>
+            </button>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="shop">
+        <div class="selection-layout shop-layout">
+          <aside class="filter-rail">
+            <h2>套件商城</h2>
+            <button class="rail-pill active">推荐</button>
+            <button class="rail-pill">乐高教育</button>
+            <button class="rail-pill">POOK 3D</button>
+            <button class="rail-pill">耗材补充</button>
+          </aside>
+          <section class="kit-grid">
+            <button class="kit-card active">
+              <span>¥899</span>
+              <div class="kit-box"></div>
+              <strong>乐高 Science 科学系列</strong>
+              <small>适合 5 岁+ · 配套 30+ 节课程</small>
+            </button>
+            <button class="kit-card">
+              <span>¥399</span>
+              <div class="kit-box printed"></div>
+              <strong>POOK 3D 打印探索套件</strong>
+              <small>适合 6 岁+ · 机构拓展包</small>
+            </button>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen active" data-screen="course">
+        <div class="course-funnel">
+          <header class="course-funnel-header">
+            <button class="course-back" id="courseBackBtn">上一级</button>
+            <div>
+              <p id="courseBreadcrumb">课程中心</p>
+              <h2 id="courseStepTitle">选择年龄段</h2>
+            </div>
+          </header>
+          <section class="course-choice-stage" id="courseChoiceStage" aria-live="polite"></section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="class-size">
+        <div class="class-size-layout">
+          <section class="class-size-panel">
+            <p>今天有几位小朋友一起上课？</p>
+            <div class="size-options" role="group" aria-label="选择人数">
+              <button class="size-option" data-size="1">1<span>陪伴探索</span></button>
+              <button class="size-option" data-size="2">2<span>轮流合作</span></button>
+              <button class="size-option active" data-size="3">3<span>小组推理</span></button>
+              <button class="size-option" data-size="4">4<span>角色协作</span></button>
+            </div>
+            <div class="strategy-card" id="strategyCard">
+              <strong>3 人课堂策略</strong>
+              <p>POKI 会让每位小朋友都有一次观察机会，再请小队一起选出最合理的答案。</p>
+              <div>
+                <span>观察员</span><span>搭建员</span><span>讲述员</span>
+              </div>
+            </div>
+            <button class="cta-button" data-next="team-photo">确认人数</button>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p>我会根据人数调整问题和分工</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="team-photo">
+        <div class="classroom-layout">
+          <section class="content-panel camera-panel">
+            <div class="panel-ribbon">让 POKI 看一看</div>
+            <div class="task-cue-card">
+              <strong>任务开始前</strong>
+              <span>请三位小朋友坐在画面里，POKI 会给大家分配号码和角色。</span>
+            </div>
+            <div class="camera-frame">
+              <div class="child-face girl">1</div>
+              <div class="child-face curly">2</div>
+              <div class="child-face boy">3</div>
+              <div class="scan-line"></div>
+            </div>
+            <div class="recognition-status ok">
+              <span></span>
+              <strong>拍好啦！三位小朋友都入镜了</strong>
+              <small>1 号观察员 · 2 号搭建员 · 3 号讲述员</small>
+            </div>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p>请记住自己的号码哦</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="story">
+        <div class="classroom-layout">
+          <section class="content-panel story-panel">
+            <div class="panel-ribbon">绘本动画</div>
+            <div class="storybook-scene">
+              <div class="ice-house"></div>
+              <div class="penguin"></div>
+              <div class="warm-house"></div>
+            </div>
+            <div class="agent-state-bar">
+              <span></span>
+              <strong>POKI 正在讲故事</strong>
+              <small>课程节点：lesson_import · 播放 AIGC 绘本动画</small>
+            </div>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p>请每位小朋友找一个你看到的线索</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="question">
+        <div class="classroom-layout">
+          <section class="content-panel question-panel">
+            <div class="panel-ribbon">互动问答</div>
+            <div class="micro-progress" id="questionProgress"></div>
+            <div class="agent-state-bar listening">
+              <span></span>
+              <strong id="questionStateTitle">POKI 正在听 1 号小朋友回答</strong>
+              <small id="questionStateBody">这一关每次只回答一个小问题，答完马上进入下一题。</small>
+            </div>
+            <h2 id="questionPrompt">你们知道企鹅住在什么环境呢？</h2>
+            <div class="turn-row" id="questionTurns">
+              <span class="student-token active">第 1 题</span>
+              <span class="student-token">第 2 题</span>
+            </div>
+            <div class="answer-cards" id="questionAnswers"></div>
+            <div class="micro-feedback" id="questionFeedback" aria-live="polite"></div>
+            <div class="agent-hint">
+              <strong>POKI 提示</strong>
+              <span id="questionHint">先看看画面里有什么，再想一想企鹅需要怎样的家。</span>
+            </div>
+            <button class="micro-cta hidden" id="questionNextBtn" type="button">下一题</button>
+          </section>
+          <aside class="agent-stage active-agent">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <div class="speech-bubble" id="questionBubble">1 号小朋友先说一个你看到的细节。</div>
+          </aside>
+        </div>
+      </section>
+
+
+      <section class="screen" data-screen="blocks">
+        <div class="classroom-layout">
+          <section class="content-panel blocks-panel">
+            <div class="panel-ribbon">找一找积木</div>
+            <div class="micro-progress" id="blocksProgress"></div>
+            <div class="task-cue-card">
+              <strong id="blocksTaskTitle">第 1 个材料</strong>
+              <span id="blocksTaskBody">先找到 5 个白色砖块，找到后点一下对应材料卡。</span>
+            </div>
+            <div class="timer-strip"><span></span><strong>01:20</strong></div>
+            <div class="block-grid" id="blockGrid">
+              <article data-block-key="white"><span>5 个</span><div class="brick white"></div><strong>白色砖块</strong></article>
+              <article data-block-key="teal"><span>2 个</span><div class="brick teal"></div><strong>蓝绿色砖块</strong></article>
+              <article data-block-key="blue"><span>12 个</span><div class="brick blue"></div><strong>蓝色长砖</strong></article>
+              <article data-block-key="yellow"><span>3 个</span><div class="brick yellow"></div><strong>黄色顶部件</strong></article>
+              <article data-block-key="red"><span>4 个</span><div class="brick red"></div><strong>红色连接件</strong></article>
+              <article data-block-key="teal-small"><span>2 个</span><div class="brick teal small"></div><strong>小号透明件</strong></article>
+            </div>
+            <div class="micro-feedback" id="blocksFeedback" aria-live="polite"></div>
+            <div class="role-strip">
+              <span>1 号找白色</span><span>2 号找蓝绿色</span><span>3 号检查数量</span>
+            </div>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p id="blocksAside">每次只找一种材料，找到后马上确认。</p>
+          </aside>
+        </div>
+      </section>
+
+
+      <section class="screen" data-screen="build">
+        <div class="classroom-layout">
+          <section class="content-panel build-panel">
+            <div class="panel-ribbon">3D 拼搭引导</div>
+            <div class="micro-progress" id="buildProgress"></div>
+            <div class="task-cue-card build-task-card">
+              <strong id="buildTaskTitle">第 1 步：先搭底座</strong>
+              <span id="buildTaskBody">1 号放底板，2 号递蓝色件，3 号检查方向，对齐后再确认。</span>
+            </div>
+            <div class="build-stage">
+              <div class="model-view">
+                <div class="model-base"></div>
+                <div class="model-wall"></div>
+                <div class="model-roof"></div>
+                <div class="rotate-ring"></div>
+              </div>
+              <div class="build-steps" id="buildSteps">
+                <span class="active">第 1 步</span>
+                <span>第 2 步</span>
+                <span>第 3 步</span>
+              </div>
+            </div>
+            <div class="micro-feedback" id="buildFeedback" aria-live="polite"></div>
+            <button class="micro-cta" id="buildConfirmBtn" type="button">这一步完成了</button>
+            <div class="role-strip">
+              <span id="buildRoleA">1 号搭底座</span><span id="buildRoleB">2 号递蓝色件</span><span id="buildRoleC">3 号检查方向</span>
+            </div>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p id="buildAside">每次只完成一个动作，完成后马上进入下一步。</p>
+          </aside>
+        </div>
+      </section>
+
+
+      <section class="screen" data-screen="build-talk">
+        <div class="classroom-layout">
+          <section class="content-panel question-panel">
+            <div class="panel-ribbon">拼搭问答</div>
+            <div class="agent-state-bar listening">
+              <span></span>
+              <strong>POKI 正在围绕模型提问</strong>
+              <small>问答反馈工作流 · 拼搭节点观察问题</small>
+            </div>
+            <h2>你们搭好的房间里，哪一部分最适合企鹅住？为什么？</h2>
+            <div class="turn-row">
+              <span class="student-token active">1 号说结构</span>
+              <span class="student-token">2 号说原因</span>
+              <span class="student-token">3 号补充改进</span>
+            </div>
+            <div class="agent-hint">
+              <strong>POKI 提示</strong>
+              <span>可以从温度、入口、空间大小和安全性这几个方向观察。</span>
+            </div>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p>每位小朋友都说一个不同发现</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="free-build">
+        <div class="classroom-layout">
+          <section class="content-panel free-build-panel">
+            <div class="panel-ribbon">自由拼搭</div>
+            <div class="micro-progress" id="freeBuildProgress"></div>
+            <div class="task-cue-card">
+              <strong id="freeBuildTaskTitle">创作挑战 1</strong>
+              <span id="freeBuildTaskBody">先给企鹅加一个更保暖的地方，完成后再做下一项。</span>
+            </div>
+            <div class="inspiration-grid" id="freeBuildGrid">
+              <article class="active"><strong>保暖</strong><span>冰屋、围墙、挡风</span></article>
+              <article><strong>入口</strong><span>门洞、斜坡、桥</span></article>
+              <article><strong>玩耍</strong><span>小鱼池、休息区</span></article>
+            </div>
+            <div class="micro-feedback" id="freeBuildFeedback" aria-live="polite"></div>
+            <button class="micro-cta" id="freeBuildConfirmBtn" type="button">这个挑战完成了</button>
+            <div class="timer-strip"><span></span><strong>10:00</strong></div>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p id="freeBuildAside">先完成三个小目标，再把它们连成一个完整作品。</p>
+          </aside>
+        </div>
+      </section>
+
+
+      <section class="screen" data-screen="photo">
+        <div class="classroom-layout">
+          <section class="content-panel camera-panel work-photo">
+            <div class="panel-ribbon">拍作品</div>
+            <div class="micro-progress" id="photoProgress"></div>
+            <div class="agent-state-bar watching">
+              <span></span>
+              <strong id="photoStateTitle">POKI 正在看作品</strong>
+              <small id="photoStateBody">每拍好一个角度就确认一次，三次完成后进入分享。</small>
+            </div>
+            <div class="photo-tabs" id="photoTabs">
+              <span class="active">正面</span><span>侧面</span><span>背面</span>
+            </div>
+            <div class="work-frame">
+              <div class="lego-build"></div>
+              <div class="child-shadow"></div>
+            </div>
+            <div class="micro-feedback" id="photoFeedback" aria-live="polite"></div>
+            <div class="recognition-status">
+              <span></span>
+              <strong id="photoTaskTitle">先拍作品正面</strong>
+              <small id="photoTaskBody">把作品放在画面中间，拍完这一面再继续下一面。</small>
+            </div>
+            <button class="micro-cta" id="photoConfirmBtn" type="button">这一面拍好了</button>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p id="photoAside">先拍正面，再慢慢转到侧面。</p>
+          </aside>
+        </div>
+      </section>
+
+
+      <section class="screen" data-screen="share">
+        <div class="classroom-layout">
+          <section class="content-panel share-panel">
+            <div class="panel-ribbon">分享拼搭结果</div>
+            <div class="micro-progress" id="shareProgress"></div>
+            <div class="agent-state-bar listening">
+              <span></span>
+              <strong id="shareStateTitle">POKI 正在听小队介绍作品</strong>
+              <small id="shareStateBody">一人一句，说完就切到下一位。</small>
+            </div>
+            <div class="share-queue" id="shareQueue">
+              <article class="active"><strong>1 号</strong><span>我的作品叫____。</span></article>
+              <article><strong>2 号</strong><span>我最喜欢的结构是____。</span></article>
+              <article><strong>3 号</strong><span>它可以帮助企鹅____。</span></article>
+            </div>
+            <div class="micro-feedback" id="shareFeedback" aria-live="polite"></div>
+            <div class="agent-hint">
+              <strong>POKI 提示</strong>
+              <span id="shareHint">不用说很长，按句式把名字、结构和用途说清楚就可以。</span>
+            </div>
+            <button class="micro-cta" id="shareConfirmBtn" type="button">这一位说完了</button>
+          </section>
+          <aside class="agent-stage">
+            <div class="voice-badge"></div>
+            <div class="agent-mini"></div>
+            <p id="shareAside">每位小朋友一句话，轮到谁就只说这一句。</p>
+          </aside>
+        </div>
+      </section>
+
+
+      <section class="screen" data-screen="result">
+        <div class="result-layout">
+          <section class="result-card">
+            <div class="badge-top">恭喜！完成课程</div>
+            <div class="result-meta">
+              <span>24:38</span>
+              <span>2026/05/04</span>
+            </div>
+            <div class="radar">
+              <i></i><b></b>
+              <span>知识</span><span>创造</span><span>合作</span>
+            </div>
+            <button class="cta-button" data-next="course">返回课程中心</button>
+          </section>
+        </div>
+        <div class="reward-chest-overlay" id="rewardChestOverlay" aria-live="polite">
+          <div class="reward-chest-card" id="rewardChestCard">
+            <span class="reward-chip">小队奖励</span>
+            <strong>课程通关宝箱</strong>
+            <p id="rewardChestCopy">打开宝箱，领取本节课的小队宝石积分。</p>
+            <button class="reward-chest" id="rewardChestBtn" type="button" aria-label="打开宝箱">
+              <span class="chest-lid"></span>
+              <span class="chest-body"></span>
+              <span class="chest-lock"></span>
+            </button>
+            <div class="reward-gems" id="rewardGems">
+              <i></i><i></i><i></i><i></i>
+            </div>
+            <div class="reward-summary" id="rewardSummary">
+              <span>奖励已发放至上课小队</span>
+              <strong>+120 宝石积分</strong>
+              <small>已计入本次小队课堂账户</small>
+              <button class="reward-claim-btn" id="rewardClaimBtn" type="button">我收下啦</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="growth">
+        <div class="growth-layout">
+          <section class="growth-hero">
+            <p>成长中心</p>
+            <h2>小队作品和每位孩子的高光时刻</h2>
+            <div class="growth-stats">
+              <article><strong>24:38</strong><span>本节课堂时长</span></article>
+              <article><strong>92</strong><span>小队合作分</span></article>
+              <article><strong>4</strong><span>孩子高光记录</span></article>
+            </div>
+            <div class="team-result-card">
+              <div class="portfolio-art animal"></div>
+              <strong>小队作品：企鹅的新房间</strong>
+              <span>小队能够围绕保暖、入口和活动空间做出分工设计，分享时表达清晰。</span>
+            </div>
+          </section>
+          <section class="highlight-grid">
+            <article>
+              <div class="child-highlight-shot one"></div>
+              <strong>1 号观察员</strong>
+              <span>发现企鹅需要寒冷环境，并能指出冰屋入口的作用。</span>
+            </article>
+            <article>
+              <div class="child-highlight-shot two"></div>
+              <strong>2 号搭建员</strong>
+              <span>主动调整屋顶结构，让模型更稳，也愿意帮助同伴递积木。</span>
+            </article>
+            <article>
+              <div class="child-highlight-shot three"></div>
+              <strong>3 号讲述员</strong>
+              <span>分享时说明“挡风墙”和“小鱼池”的设计理由，表达完整。</span>
+            </article>
+            <article>
+              <div class="child-highlight-shot four"></div>
+              <strong>4 号协作员</strong>
+              <span>在小队讨论中补充了安全出口想法，合作意识突出。</span>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="profile">
+        <div class="profile-layout">
+          <section class="profile-card">
+            <div class="avatar-orb">P</div>
+            <h2>POOK 小队</h2>
+            <p>4 位小朋友 · 机构课堂账号</p>
+            <div class="profile-actions">
+              <button data-next="growth">查看成长记录</button>
+              <button data-next="teacher">课堂辅助设置</button>
+              <button data-next="shop">套件商城</button>
+            </div>
+          </section>
+          <section class="device-card safety-card">
+            <h2>账号与数据保护</h2>
+            <div class="status-list">
+              <span>儿童隐私保护协议</span>
+              <span>家长授权与机构授权</span>
+              <span>课堂影像与语音数据管理</span>
+              <span>作品与成长报告导出权限</span>
+              <span>账号安全与设备绑定</span>
+              <span>数据删除与撤回授权</span>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="teacher">
+        <div class="teacher-layout">
+          <section class="teacher-panel">
+            <h2>课堂辅助设置</h2>
+            <div class="teacher-grid">
+              <button>设备检查</button>
+              <button>重新选择人数</button>
+              <button>课程难度</button>
+              <button>声音测试</button>
+              <button>网络状态</button>
+              <button>查看课后日志</button>
+            </div>
+          </section>
+          <section class="teacher-panel">
+            <h2>课堂状态</h2>
+            <div class="status-list">
+              <span>人数：3 人</span>
+              <span>默认进入：课程中心</span>
+              <span>课堂中：隐藏辅助设置</span>
+              <span>设备：摄像头、麦克风正常</span>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <footer class="lesson-nav">
+        <button class="nav-step" id="prevBtn">上一步</button>
+        <div class="progress-dots" id="progressDots" aria-label="页面进度"></div>
+        <button class="nav-step primary" id="nextBtn">下一步</button>
+      </footer>
+
+      <div class="lesson-toast" id="lessonToast" aria-live="polite"></div>
+
+      <section class="task-overlay" id="taskOverlay" aria-live="polite">
+        <div class="task-modal">
+          <span id="cueType">任务开始</span>
+          <h2 id="cueTitle">准备开始</h2>
+          <p id="cueBody">POKI 会告诉小朋友下一步要做什么。</p>
+          <button id="cueCloseBtn">我知道啦</button>
+        </div>
+      </section>
+    </main>
+    <script src="/static/former/pook-app.js?v=20260507b"></script>
+  </body>
+</html>
