@@ -14,15 +14,15 @@ const phaseIndex = computed(() => phaseOrder.indexOf(goalPhase.value));
 const missionCopy = computed(() => {
   if (lesson.value.welcomeVisual === "rhino") {
     return {
-      need: "小犀牛脏脏啦",
-      help: "帮它搭个洗澡池",
-      speech: "宝贝们看一看，小犀牛身上脏脏啦。我们一起帮它搭一个可以洗澡的地方，好不好呀？",
+      need: "先看今天要搭什么",
+      help: "用积木做一个小犀牛洗澡装置",
+      speech: "宝贝们先看这个积木模型，今天我们要帮小犀牛搭一个可以洗澡的地方。等下先看清楚，再一起动手。",
     };
   }
   return {
-    need: "它需要帮忙",
+    need: "先看今天要搭什么",
     help: lesson.value.atmosphere,
-    speech: "宝贝们看一看，今天有一个小朋友需要我们帮忙。我们一起试试看，好不好呀？",
+    speech: "宝贝们先看这个积木模型，今天我们要一起完成一个小作品。等下先看清楚，再一起动手。",
   };
 });
 
@@ -43,10 +43,10 @@ const pathCards = [
 const goalCopy = computed(() => {
   if (goalPhase.value === "mission") {
     return {
-      tag: "小使命",
-      title: "一起帮帮它",
+      tag: "积木任务",
+      title: "先看今天要搭什么",
       body: missionCopy.value.speech,
-      poki: "先听 POKI 说一个小任务。",
+      poki: "先看最具体的积木任务，再知道今天学什么。",
     };
   }
   if (goalPhase.value === "power") {
@@ -106,16 +106,9 @@ onBeforeUnmount(() => {
           <article class="goals-mission-preview">
             <span class="goals-stage-label">{{ goalCopy.tag }}</span>
             <div class="goals-mission-scene">
-              <i class="choice-visual beta-lesson-visual" :class="lesson.welcomeVisual"></i>
-              <div class="goals-mission-arrow">→</div>
-              <div class="goals-mission-build">
-                <div class="model-view goals-mini-model" data-build-stage="2">
-                  <div class="model-base"></div>
-                  <div class="model-wall"></div>
-                  <div class="model-roof"></div>
-                  <div class="rotate-ring"></div>
-                </div>
-              </div>
+              <figure class="goals-model-photo">
+                <img src="/resources/2.jpg" alt="本节课积木建模任务" />
+              </figure>
             </div>
             <div class="goals-question-copy">
               <strong>{{ missionCopy.need }}</strong>
@@ -146,7 +139,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="goals-step-tabs" aria-label="目标页阶段">
-          <span :class="{ active: phaseIndex === 0 }">使命</span>
+          <span :class="{ active: phaseIndex === 0 }">积木</span>
           <span :class="{ active: phaseIndex === 1 }">本领</span>
           <span :class="{ active: phaseIndex === 2 }">路线</span>
         </div>
@@ -165,7 +158,7 @@ onBeforeUnmount(() => {
         </div>
 
         <button class="cta-button goals-start-button" type="button" @click="store.nextScreen">
-          进入课堂
+          带着问题看视频
         </button>
       </aside>
     </div>

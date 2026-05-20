@@ -167,5 +167,5 @@ export const meetStageCopy = {
   scanning: "正在识别今天的小队友…",
   captured: "拍好啦，Pooki 正在安排今天的角色分工",
   splitTitle: "今天的小队角色",
-  autoAdvance: "角色确认完成后，会自动进入课前欢迎",
+  autoAdvance: "角色确认完成后，会自动进入本节课目标",
 };

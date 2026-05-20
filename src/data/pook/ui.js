@@ -6,18 +6,18 @@ export const cues = {
   },
   welcome: {
     type: "POKI 小提醒",
-    title: "你好呀",
-    body: "准备好啦，我们马上开始今天的小任务。",
+    title: "带着问题看",
+    body: "先记住 POKI 的小问题，看完视频马上来回答。",
   },
   goals: {
     type: "POKI 小提醒",
-    title: "看今天做什么",
-    body: "先看清楚目标，再动手会更棒。",
+    title: "先看今天做什么",
+    body: "先知道今天要完成什么，再带着问题去看视频。",
   },
   question: {
     type: "POKI 小提醒",
-    title: "先看一看",
-    body: "不用着急，POKI 会陪你一起观察。",
+    title: "问答1：来回答啦",
+    body: "刚刚视频里的小问题，现在一起说一说。",
   },
   blocks: {
     type: "POKI 小提醒",
@@ -28,6 +28,11 @@ export const cues = {
     type: "POKI 小提醒",
     title: "开始拼搭",
     body: "一步一步来，POKI 会提醒你。",
+  },
+  question2: {
+    type: "POKI 小提醒",
+    title: "问答2：看看拼出了什么",
+    body: "刚刚我们搭出了一个作品，现在一起说说它是什么、在帮谁。",
   },
   "free-build": {
     type: "POKI 小提醒",

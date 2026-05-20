@@ -4,9 +4,10 @@ import { meetRoleProfiles } from "../../../data/pookData";
 import { usePookAppStore } from "../../../composables/usePookApp";
 
 const store = usePookAppStore();
-const stage = ref("scan");
+const stage = ref("greet");
 const revealedRoleCount = ref(0);
 const meetTiming = {
+  greetToScan: 8000,
   scanToResult: 5000,
   roleReveal: 5000,
   autoAdvance: 5000,
@@ -25,10 +26,19 @@ const teamMembers = computed(() =>
 );
 const ipPlaceholders = Array.from({ length: 8 }, () => "🤖");
 const currentSpeech = computed(() => {
+  if (stage.value === "greet") return `${store.currentTeam.value.name}，POKI 好想你们呀！`;
   if (stage.value === "scan") return "POKI 正在认识今天的小队友。";
   if (revealedRoleCount.value === 0) return "我来给大家分配今天的小任务。";
   const member = teamMembers.value[revealedRoleCount.value - 1];
   return `${member.number}号小朋友是${member.role.title}。`;
+});
+const greetingCopy = computed(() => {
+  const performance = store.currentTeam.value.lastPerformance || "上次你们表现得很认真";
+  return {
+    title: `${store.currentTeam.value.name}回来啦！`,
+    body: `POKI 好开心又见到你们。${performance}。今天也一起加油吧！`,
+    action: "先让 POKI 看看今天是哪几位小朋友来了。",
+  };
 });
 
 function clearTimers() {
@@ -49,7 +59,7 @@ function clearTimers() {
 function scheduleAutoAdvance() {
   advanceTimer = window.setTimeout(() => {
     if (store.currentScreen.value === "meet") {
-      store.navigateTo("welcome");
+      store.navigateTo("goals");
     }
   }, meetTiming.autoAdvance);
 }
@@ -75,11 +85,14 @@ function enterResultStage() {
 
 function startSequence() {
   clearTimers();
-  stage.value = "scan";
+  stage.value = "greet";
   revealedRoleCount.value = 0;
   stageTimer = window.setTimeout(() => {
-    enterResultStage();
-  }, meetTiming.scanToResult);
+    stage.value = "scan";
+    stageTimer = window.setTimeout(() => {
+      enterResultStage();
+    }, meetTiming.scanToResult);
+  }, meetTiming.greetToScan);
 }
 
 watch(
@@ -90,7 +103,7 @@ watch(
       return;
     }
     clearTimers();
-    stage.value = "scan";
+    stage.value = "greet";
     revealedRoleCount.value = 0;
   },
   { immediate: true },
@@ -116,11 +129,27 @@ onBeforeUnmount(() => {
           <div class="meet-test-video-body">
             <img class="meet-test-classroom-photo" src="/resources/1.jpeg" alt="课堂画面占位" />
             <div v-if="stage === 'scan'" class="meet-test-scan-line"></div>
+            <div v-if="stage === 'greet'" class="meet-greeting-overlay" aria-live="polite">
+              <span aria-hidden="true">🤖</span>
+              <div>
+                <strong>{{ greetingCopy.title }}</strong>
+                <p>{{ greetingCopy.body }}</p>
+                <small>{{ greetingCopy.action }}</small>
+              </div>
+            </div>
           </div>
 
           <div class="meet-test-status">
-            <span>{{ stage === "scan" ? "识别中" : "已分工" }}</span>
-            <strong>{{ stage === "scan" ? "POKI 正在看今天的小队友" : "今天的小队准备好啦" }}</strong>
+            <span>{{ stage === "greet" ? "欢迎回来" : stage === "scan" ? "识别中" : "已分工" }}</span>
+            <strong>
+              {{
+                stage === "greet"
+                  ? "POKI 正在和小队打招呼"
+                  : stage === "scan"
+                    ? "POKI 正在看今天的小队友"
+                    : "今天的小队准备好啦"
+              }}
+            </strong>
           </div>
         </div>
 

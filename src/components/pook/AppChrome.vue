@@ -21,8 +21,8 @@ const store = usePookAppStore();
         <span class="gem-wallet-icon" aria-hidden="true"></span>
         <strong>{{ store.gemBalance.value }}</strong>
       </div>
-      <button class="round-button user-button" aria-label="用户中心" @click="store.navigateTo('profile')">
-        <span aria-hidden="true"></span>
+      <button class="round-button settings-button" type="button" aria-label="设置" @click="store.navigateTo('teacher')">
+        <span aria-hidden="true">⚙</span>
       </button>
     </div>
   </header>

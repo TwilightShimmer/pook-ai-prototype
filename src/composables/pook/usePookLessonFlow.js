@@ -13,6 +13,7 @@ export function createPookLessonFlow({ showToast }) {
 
   function canAdvance(screenId) {
     if (screenId === "question") return lessonState.question.completed;
+    if (screenId === "question2") return lessonState.question2.completed;
     if (screenId === "blocks") return lessonState.blocks.completed;
     if (screenId === "build") return lessonState.build.completed;
     if (screenId === "free-build") return lessonState["free-build"].completed;
@@ -21,8 +22,8 @@ export function createPookLessonFlow({ showToast }) {
     return true;
   }
 
-  function answerQuestion(index) {
-    const state = lessonState.question;
+  function answerQuestion(index, flowKey = "question") {
+    const state = lessonState[flowKey] ?? lessonState.question;
     const step = state.steps[state.index];
     if (state.answered) return { type: "idle", message: "" };
     if (index === step.correct) {
@@ -34,8 +35,8 @@ export function createPookLessonFlow({ showToast }) {
     return { type: "error", message: step.error };
   }
 
-  function nextQuestionStep() {
-    const state = lessonState.question;
+  function nextQuestionStep(flowKey = "question") {
+    const state = lessonState[flowKey] ?? lessonState.question;
     if (!state.answered) return;
     if (state.index < state.steps.length - 1) {
       state.index += 1;

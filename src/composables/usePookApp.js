@@ -92,6 +92,11 @@ export function createPookAppStore() {
     gemsAwarded: 0,
     awardedCard: null,
     isNewCard: false,
+    isFlashCard: false,
+    starsAwarded: 0,
+    totalStars: 0,
+    xpAwarded: 0,
+    totalXp: 0,
   });
   const teamSwitchGate = reactive({
     visible: false,
@@ -145,6 +150,11 @@ export function createPookAppStore() {
       gemsAwarded: 0,
       awardedCard: null,
       isNewCard: false,
+      isFlashCard: false,
+      starsAwarded: 0,
+      totalStars: rewardableFlow.length,
+      xpAwarded: 0,
+      totalXp: rewardableFlow.length * stepRewardXp,
     };
     lessonFlow.resetLessonFlow();
   }
@@ -312,6 +322,75 @@ export function createPookAppStore() {
     ui.showToast(`本次获得 +${rewardGemAmount} 宝石积分，纪念卡已在展馆收藏`);
   }
 
+  function grantLessonCompletionRewardsByPrd() {
+    const runId = lessonRunId.value;
+    if (!runId || rewardedRunIds.value.includes(runId)) return;
+
+    rewardedRunIds.value = [...rewardedRunIds.value, runId];
+    gemBalance.value += rewardGemAmount;
+
+    const lesson = course.currentLesson.value;
+    const pendingFinalSteps = rewardableFlow.filter((screenId) => !rewardedStepIds.value.includes(screenId)).length;
+    const finalStarsAwarded = lessonStarCount.value + pendingFinalSteps;
+    const finalXpAwarded = lessonXpCount.value + pendingFinalSteps * stepRewardXp;
+    const totalStars = rewardableFlow.length;
+    const totalXp = rewardableFlow.length * stepRewardXp;
+    const shouldUpgradeFlashCard = finalStarsAwarded >= totalStars;
+    const cardId = `${lesson.theme}:${lesson.title}`;
+    const existingCard = collectedLessonCards.value.find((card) => card.id === cardId) ?? null;
+
+    let awardedCard = existingCard;
+    let isNewCard = false;
+
+    if (!existingCard) {
+      awardedCard = {
+        id: cardId,
+        title: lesson.title,
+        theme: lesson.theme,
+        badge: lesson.badge,
+        visual: lesson.welcomeVisual,
+        earnedAt: "刚刚获得",
+        isFlashCard: shouldUpgradeFlashCard,
+      };
+      collectedLessonCards.value = [awardedCard, ...collectedLessonCards.value];
+      isNewCard = true;
+    } else if (shouldUpgradeFlashCard && !existingCard.isFlashCard) {
+      awardedCard = {
+        ...existingCard,
+        isFlashCard: true,
+        earnedAt: existingCard.earnedAt ?? "已收藏",
+      };
+      collectedLessonCards.value = collectedLessonCards.value.map((card) =>
+        card.id === cardId ? awardedCard : card,
+      );
+    }
+
+    currentCompletionReward.value = {
+      gemsAwarded: rewardGemAmount,
+      awardedCard,
+      isNewCard,
+      isFlashCard: Boolean(awardedCard?.isFlashCard),
+      starsAwarded: finalStarsAwarded,
+      totalStars,
+      xpAwarded: finalXpAwarded,
+      totalXp,
+      teamName: currentTeam.value.name,
+    };
+
+    updateCurrentTeam({
+      stars: currentTeam.value.stars + finalStarsAwarded,
+      xp: currentTeam.value.xp + finalXpAwarded,
+      completedLessons: currentTeam.value.completedLessons + 1,
+      lastPerformance: `刚刚完成《${lesson.title}》，获得 ${finalStarsAwarded} 颗星星和 ${finalXpAwarded} 经验`,
+    });
+
+    if (isNewCard) {
+      ui.showToast(`获得纪念卡《${lesson.title}》和 +${rewardGemAmount} 宝石积分`);
+      return;
+    }
+    ui.showToast(`本次获得 +${rewardGemAmount} 宝石积分，纪念卡已在展馆收藏`);
+  }
+
   function navigateTo(screenId) {
     if (!screens.some((screen) => screen.id === screenId)) return;
     const isScreenChanged = currentScreen.value !== screenId;
@@ -327,7 +406,7 @@ export function createPookAppStore() {
       course.resetSelection();
     }
     if (screenId === "result") {
-      grantLessonCompletionRewards();
+      grantLessonCompletionRewardsByPrd();
     }
     const stepRewardTriggered = isScreenChanged ? maybeTriggerStepReward(currentScreen.value, screenId) : false;
     if (isScreenChanged) {
@@ -415,6 +494,13 @@ export function createPookAppStore() {
               : "upcoming",
     })),
   );
+  const lessonDebugSteps = computed(() =>
+    linearFlow.map((screenId, index) => ({
+      id: screenId,
+      index: String(index + 1).padStart(2, "0"),
+      label: progressLabels[screenId] ?? screenId,
+    })),
+  );
   const currentJourneyMeta = computed(
     () => lessonJourneyMeta[currentScreen.value] ?? { short: "", action: "", reward: "" },
   );
@@ -424,8 +510,9 @@ export function createPookAppStore() {
   const nextActionLabel = computed(() => {
     const screenId = currentScreen.value;
     if (screenId === "course") return "开始任务";
-    if (screenId === "welcome") return "查看今天的任务";
-    if (screenId === "goals") return "进入课堂";
+    if (screenId === "goals") return "带着问题看视频";
+    if (screenId === "welcome") return "去回答问题";
+    if (screenId === "question2") return "继续创作";
     if (screenId === "result") return "成长卡已完成";
     if (!canAdvanceCurrent.value) return "完成当前挑战";
     return "继续闯关";
@@ -465,6 +552,14 @@ export function createPookAppStore() {
       return;
     }
     navigateTo(linearFlow[Math.max(index - 1, 0)]);
+  }
+
+  function debugJumpToLessonStep(screenId) {
+    if (!linearFlow.includes(screenId)) return;
+    exitLessonConfirm.value = false;
+    ui.closeTaskCue();
+    ui.resetReward();
+    navigateTo(screenId);
   }
 
   function goBackToPreviousPage() {
@@ -519,6 +614,7 @@ export function createPookAppStore() {
     linearFlow,
     progressLabels,
     lessonJourney,
+    lessonDebugSteps,
     currentJourneyMeta,
     lessonXp,
     lessonStarCount,
@@ -562,6 +658,7 @@ export function createPookAppStore() {
     confirmExitLesson,
     nextScreen,
     prevScreen,
+    debugJumpToLessonStep,
     submitTeacherGate,
     editableLessonCues,
     updateLessonCue,

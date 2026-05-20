@@ -33,6 +33,24 @@ export function createInitialLessonState() {
         },
       ],
     },
+    question2: {
+      index: 0,
+      completed: false,
+      answered: false,
+      steps: [
+        {
+          prompt: "刚刚我们拼出来的是什么？",
+          hint: "可以先看一看作品，它是给小犀牛用来洗澡的地方。",
+          bubble: "拼完以后，我们要知道自己搭出了什么。",
+          stateTitle: "Pooki 正在听小朋友介绍刚刚的作品",
+          stateBody: "先说它是什么，再说它帮小犀牛做什么。",
+          options: ["小犀牛的洗澡池", "会飞的火箭", "小老鼠的房间"],
+          correct: 0,
+          success: "说对啦，这是给小犀牛洗澡用的地方。",
+          error: "再看看刚刚拼的作品，它是帮小犀牛洗澡的。",
+        },
+      ],
+    },
     blocks: {
       index: 0,
       completed: false,

@@ -11,23 +11,42 @@ const questionPhase = ref("look");
 const hintIndex = ref(0);
 let hintTimer = 0;
 
-const state = computed(() => store.lessonState.question);
+const isQuestion2 = computed(() => store.currentScreen.value === "question2");
+const flowKey = computed(() => (isQuestion2.value ? "question2" : "question"));
+const state = computed(() => store.lessonState[flowKey.value]);
 const step = computed(() => state.value.steps[state.value.index]);
 const lesson = computed(() => store.currentLesson.value);
 const phaseOrder = ["look", "speak", "choose"];
 const phaseIndex = computed(() => phaseOrder.indexOf(questionPhase.value));
-const isActive = computed(() => store.currentScreen.value === "question");
+const isActive = computed(() => ["question", "question2"].includes(store.currentScreen.value));
 
-const speakHints = ["说颜色", "说身体", "说角角", "说脏脏的"];
-const answerCards = computed(() => [
-  { icon: "🦏", label: "有角", index: 0 },
-  { icon: "🐭", label: "小小的", index: 1 },
-  { icon: "🪽", label: "会飞", index: 2 },
-]);
+const speakHints = computed(() =>
+  isQuestion2.value
+    ? ["说作品", "说用途", "说小犀牛", "说洗澡"]
+    : ["说颜色", "说身体", "说角角", "说脏脏的"],
+);
+const answerCards = computed(() =>
+  isQuestion2.value
+    ? [
+        { icon: "🛁", label: "洗澡池", index: 0 },
+        { icon: "🚀", label: "火箭", index: 1 },
+        { icon: "🏠", label: "房间", index: 2 },
+      ]
+    : [
+        { icon: "🦏", label: "有角", index: 0 },
+        { icon: "🐭", label: "小小的", index: 1 },
+        { icon: "🪽", label: "会飞", index: 2 },
+      ],
+);
 
 const phaseCopy = computed(() => {
   if (questionPhase.value === "look") {
-    return {
+    return isQuestion2.value ? {
+      tag: "问答2",
+      title: "刚刚搭出了什么？",
+      speech: "宝贝们，先看一看刚刚拼好的作品。它像什么？它可以帮小犀牛做什么？",
+      action: "我看好了",
+    } : {
       tag: "看一看",
       title: "小犀牛怎么啦？",
       speech: "宝贝们，先看一看。小犀牛身上有什么呀？",
@@ -38,14 +57,16 @@ const phaseCopy = computed(() => {
     return {
       tag: "说一说",
       title: "说一个发现",
-      speech: `可以说一个你看到的地方。比如：${speakHints[hintIndex.value]}。`,
+      speech: `可以说一个你看到的地方。比如：${speakHints.value[hintIndex.value]}。`,
       action: "听到了",
     };
   }
   return {
     tag: "选一选",
-    title: "点一点你看到的",
-    speech: "刚刚我们说了很多发现。现在点一点，你看到的是哪一个？",
+    title: isQuestion2.value ? "点一点作品是什么" : "点一点你看到的",
+    speech: isQuestion2.value
+      ? "刚刚我们说了作品的故事。现在点一点，它是什么？"
+      : "刚刚我们说了很多发现。现在点一点，你看到的是哪一个？",
     action: "",
   };
 });
@@ -58,7 +79,7 @@ function stopHintTimer() {
 function startHintTimer() {
   stopHintTimer();
   hintTimer = window.setInterval(() => {
-    hintIndex.value = (hintIndex.value + 1) % speakHints.length;
+    hintIndex.value = (hintIndex.value + 1) % speakHints.value.length;
   }, 1400);
 }
 
@@ -73,7 +94,7 @@ function setPhase(phase) {
 }
 
 function selectAnswer(index) {
-  const result = store.answerQuestion(index);
+  const result = store.answerQuestion(index, flowKey.value);
   showFeedback(result);
   if (result.type === "error") {
     wrongAnswerIndex.value = index;
@@ -88,7 +109,7 @@ function selectAnswer(index) {
 
 function nextStep() {
   clearFeedback();
-  store.nextQuestionStep();
+  store.nextQuestionStep(flowKey.value);
 }
 
 watch(
@@ -111,7 +132,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section class="screen" :class="{ active: isActive }" data-screen="question">
+  <section class="screen" :class="{ active: isActive }" :data-screen="store.currentScreen.value">
     <div class="question-observe-shell">
       <section class="question-observe-main">
         <div class="question-observe-head">
@@ -125,7 +146,7 @@ onBeforeUnmount(() => {
         <div class="question-observe-stage" :class="`phase-${questionPhase}`">
           <div class="question-visual-card">
             <i class="choice-visual beta-lesson-visual" :class="lesson.welcomeVisual"></i>
-            <span class="question-visual-word">{{ questionPhase === "choose" ? "选一选" : "看一看" }}</span>
+            <span class="question-visual-word">{{ questionPhase === "choose" ? "选一选" : isQuestion2 ? "作品" : "看一看" }}</span>
           </div>
 
           <div v-if="questionPhase === 'speak'" class="question-listening-card">
@@ -167,7 +188,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="question-mini-hints">
-          <span>可以这样说</span>
+          <span>{{ isQuestion2 ? "可以这样说作品" : "可以这样说" }}</span>
           <b v-for="hint in speakHints" :key="hint" :class="{ active: questionPhase === 'speak' && hint === speakHints[hintIndex] }">
             {{ hint }}
           </b>

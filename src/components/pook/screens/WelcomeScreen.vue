@@ -13,25 +13,30 @@ let videoStartTimer = 0;
 const welcomeLines = computed(() =>
   store.isReturningStudent.value ? lesson.value.welcomeBack : lesson.value.welcomeFirst,
 );
+const introQuestion = computed(() =>
+  lesson.value.question?.prompt
+  ?? store.lessonState.question.steps[store.lessonState.question.index]?.prompt
+  ?? "视频里发生了什么？",
+);
 
 const talkLines = computed(() => [
   {
-    tag: "今天主题",
+    tag: "先记问题",
     emoji: "🤖",
-    speech: `今天我们要一起完成《${lesson.value.title}》。`,
+    speech: `等下看视频时，帮 POKI 找一找：${introQuestion.value}`,
+    detail: "先记住这个小问题，再开始看视频。",
+  },
+  {
+    tag: "看视频找答案",
+    emoji: "👀",
+    speech: welcomeLines.value[1] ?? "一边看，一边找答案。",
     detail: lesson.value.atmosphere,
   },
   {
-    tag: "先看一看",
-    emoji: "👀",
-    speech: welcomeLines.value[1] ?? "先看图，再听 POKI 说今天要做什么。",
-    detail: "POKI 会先说，画面会帮小朋友理解。",
-  },
-  {
-    tag: "马上开始",
+    tag: "看完就回答",
     emoji: "🧱",
-    speech: "等一下我们会开始今天的小任务。",
-    detail: lesson.value.currentTasks?.[0] ?? "先从最简单的一步开始。",
+    speech: "视频看完，我们马上一起回答这个问题。",
+    detail: "可以先说出来，再看图片选答案。",
   },
 ]);
 
@@ -87,7 +92,7 @@ onBeforeUnmount(() => {
             <span></span>
             <span></span>
             <span></span>
-            <strong>今天要学什么？</strong>
+            <strong>带着问题看视频</strong>
           </div>
 
           <div class="welcome-media-body">
@@ -103,7 +108,7 @@ onBeforeUnmount(() => {
             ></video>
             <div v-if="!videoStarted" class="welcome-video-pause-mask">
               <span>🤖</span>
-              <strong>POKI 先讲一讲</strong>
+              <strong>先听 POKI 的小问题</strong>
             </div>
             <div class="welcome-topic-overlay">
               <span class="welcome-topic-badge">{{ lesson.theme }}</span>
@@ -133,7 +138,7 @@ onBeforeUnmount(() => {
           </div>
 
           <button class="cta-button welcome-start-button" type="button" @click="store.nextScreen">
-            开始任务
+            去回答问题
           </button>
         </aside>
       </section>

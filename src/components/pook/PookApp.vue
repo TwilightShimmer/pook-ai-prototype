@@ -5,6 +5,7 @@ import "../../styles/pook-app.css";
 import AppChrome from "./AppChrome.vue";
 import AppDock from "./AppDock.vue";
 import ExitLessonConfirm from "./ExitLessonConfirm.vue";
+import LessonDebugJump from "./LessonDebugJump.vue";
 import LessonNav from "./LessonNav.vue";
 import LessonToast from "./LessonToast.vue";
 import PageTransitionOverlay from "./PageTransitionOverlay.vue";
@@ -75,6 +76,7 @@ onBeforeUnmount(() => {
       <TeacherScreen />
 
       <LessonNav />
+      <LessonDebugJump />
       <LessonToast />
       <PageTransitionOverlay />
       <RewardChestOverlay />

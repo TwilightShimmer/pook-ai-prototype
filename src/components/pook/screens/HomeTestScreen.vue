@@ -7,6 +7,7 @@ const store = usePookAppStore();
 const selectedThemeKey = ref("life");
 const bubblesCollapsed = ref(false);
 const activeActivityId = ref(null);
+const activityExternalUrl = "https://www.baidu.com";
 
 const activityItems = [
   {
@@ -28,15 +29,6 @@ const activityItems = [
     bullets: ["少文字，多画面", "先体验，再理解", "孩子主导，老师控场"],
   },
   {
-    id: "partners",
-    label: "合作机构",
-    title: "一起把课堂做轻",
-    emoji: "🏫",
-    tone: "orange",
-    summary: "面向幼儿园、科创空间和亲子教育场馆开放合作。",
-    bullets: ["课程共建", "活动联名", "课堂数据反馈"],
-  },
-  {
     id: "gallery",
     label: "风采展馆",
     title: "小队风采展馆",
@@ -47,9 +39,6 @@ const activityItems = [
   },
 ];
 
-const selectedTheme = computed(
-  () => scienceThemes.find((theme) => theme.key === selectedThemeKey.value) ?? scienceThemes[0],
-);
 const selectedLessons = computed(() => scienceThemeLessons[selectedThemeKey.value] ?? []);
 const floatingBubbles = computed(() => activityItems);
 const activeActivity = computed(
@@ -79,8 +68,7 @@ function startThemeLesson(themeKey, lessonIndex = 0) {
 }
 
 function openActivity(item) {
-  activeActivityId.value = item.id;
-  bubblesCollapsed.value = false;
+  window.open(activityExternalUrl, "_blank", "noopener,noreferrer");
 }
 
 function toggleBubbles() {
@@ -114,12 +102,6 @@ function lessonEmoji(lesson) {
   <section class="screen" :class="{ active: store.currentScreen.value === 'home' }" data-screen="home">
     <div class="home-test-layout">
       <section class="home-test-main">
-        <div class="home-test-copy">
-          <span class="home-test-hero-emoji" aria-hidden="true">🤖</span>
-          <h1>点亮第一关</h1>
-          <p>跟 POKI 开始</p>
-        </div>
-
         <div class="home-test-course-stage">
           <aside class="home-test-theme-rail" aria-label="课程主题">
             <button
@@ -139,22 +121,14 @@ function lessonEmoji(lesson) {
           </aside>
 
           <div class="home-test-panel">
-            <header class="home-test-panel-header">
-              <div>
-                <p>主题</p>
-                <h3><span aria-hidden="true">{{ themeEmoji(selectedTheme) }}</span>{{ selectedTheme.shortLabel }}</h3>
-              </div>
-              <button class="cta-button home-test-start" @click="startThemeLesson(selectedTheme.key)">开始</button>
-            </header>
-
             <div class="home-test-lesson-map">
               <div
                 v-for="(lesson, index) in selectedLessons"
-                :key="`${selectedTheme.key}-${lesson.label}`"
+                :key="`${selectedThemeKey}-${lesson.label}`"
                 class="home-test-lesson-node"
                 :class="[`node-${index + 1}`, { locked: index > 0, featured: index === 0 }]"
               >
-                <button class="home-test-node-core" @click="startThemeLesson(selectedTheme.key, index)">
+                <button class="home-test-node-core" @click="startThemeLesson(selectedThemeKey, index)">
                   <span v-if="index === 0" class="home-test-node-guide">
                     <span class="home-test-node-guide-emoji">🤖</span>
                     <span>跟 POKI 来</span>
