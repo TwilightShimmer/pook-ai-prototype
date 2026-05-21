@@ -1,0 +1,209 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>首页课程地图居中与活动入口精简UI开发PRD</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <aside class="page-sidebar">
+      <a class="back-link" href="index.html">返回目录</a>
+      <nav>
+        <p>目录</p>
+        <ul>
+          <li><a href="#info">文档信息</a></li>
+          <li><a href="#decision">本轮决策</a></li>
+          <li><a href="#layout">页面布局</a></li>
+          <li><a href="#components">组件规格</a></li>
+          <li><a href="#interaction">交互规则</a></li>
+          <li><a href="#motion">动效要求</a></li>
+          <li><a href="#copy">文案规则</a></li>
+          <li><a href="#acceptance">验收标准</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="page-main">
+      <header class="doc-hero">
+        <span class="hero-chip">PRD / 首页 UI 开发</span>
+        <h1>首页课程地图居中与活动入口精简 UI 开发 PRD</h1>
+        <p>本轮目标：让首页更像低龄孩子能理解的闯关地图，减少成人网页式标题、二次确认和重复 CTA。</p>
+      </header>
+
+      
+      <section class="reading-guide">
+        <div>
+          <span>阅读说明</span>
+          <strong>先看结论，再看细节。</strong>
+          <p>这份文档围绕《首页课程地图居中与活动入口精简 UI 开发 PRD》展开，重点不是堆功能，而是把模糊讨论收口成可判断、可协作、可开发或可验收的产品依据。</p>
+        </div>
+        <ul>
+          <li>简单摘要：先确认本文解决的问题、核心结论和适用版本。</li>
+          <li>PM价值：把真实场景、用户问题、业务规则和执行边界讲清楚，减少团队理解偏差。</li>
+          <li>使用方式：老板看结论和风险，设计看页面目标，开发看规则和验收口径。</li>
+        </ul>
+      </section><section id="info" class="doc-section">
+        <h2>文档信息</h2>
+        <section class="meta-grid">
+          <article class="meta-card"><span>页面</span><strong>首页</strong></article>
+          <article class="meta-card"><span>优先级</span><strong>P0</strong></article>
+          <article class="meta-card"><span>使用者</span><strong>老师 / 4-6岁儿童</strong></article>
+          <article class="meta-card"><span>开发目录</span><strong><code>VUE3-β原型</code></strong></article>
+          <article class="meta-card"><span>核心组件</span><strong>课程地图 / 主题书签 / 活动小球</strong></article>
+          <article class="meta-card"><span>更新时间</span><strong>2026-05-18</strong></article>
+        </section>
+      </section>
+
+      <section id="decision" class="doc-section">
+        <h2>本轮决策</h2>
+        <section class="value-grid">
+          <article class="value-card">
+            <span>01</span>
+            <p>删除顶部“点亮第一关，跟 POKI 开始”。它和课程节点引导重复，会让首页像网页 hero，而不是课程地图。</p>
+          </article>
+          <article class="value-card">
+            <span>02</span>
+            <p>删除选择主题后的左上角二次提示。主题状态由左侧书签高亮、课程地图切换和背景视觉变化表达。</p>
+          </article>
+          <article class="value-card">
+            <span>03</span>
+            <p>删除紫色“开始”按钮。首页主操作只保留“点击当前亮起课程节点开始”。</p>
+          </article>
+          <article class="value-card">
+            <span>04</span>
+            <p>活动小球删除“合作机构”。能进入 App 的人默认已经是合作机构老师，不需要在首页再次解释合作。</p>
+          </article>
+        </section>
+      </section>
+
+      <section id="layout" class="doc-section">
+        <h2>页面布局</h2>
+        <h3>整体容器</h3>
+        <ul>
+          <li>首页主容器高度占满当前 screen 内容区。</li>
+          <li>主容器内只保留课程选择区，不再保留顶部标题区。</li>
+          <li>主容器右侧预留活动小球区域，避免课程地图被小球遮挡。</li>
+          <li>课程选择区垂直居中，视觉中心略高于屏幕正中，避免底部导航造成压迫。</li>
+        </ul>
+
+        <h3>建议布局参数</h3>
+        <section class="feature-grid">
+          <article class="feature-card"><h3>主容器 padding</h3><p>上/下 28px，左 30px，右侧至少 220px 预留给活动小球。</p></article>
+          <article class="feature-card"><h3>课程区高度</h3><p>建议高度 <code>min(620px, 100%)</code>，并在主容器内垂直居中。</p></article>
+          <article class="feature-card"><h3>主题栏宽度</h3><p>左侧主题书签区固定约 188px，书签按钮宽 122px。</p></article>
+          <article class="feature-card"><h3>课程地图高度</h3><p>地图容器建议 <code>min-height: min(500px, 100%)</code>，内部上下 padding 约 48px。</p></article>
+        </section>
+      </section>
+
+      <section id="components" class="doc-section">
+        <h2>组件规格</h2>
+
+        <h3>1. 主题书签 ThemeRail</h3>
+        <ul>
+          <li>位置：页面左侧，垂直排列。</li>
+          <li>按钮尺寸：宽 122px，最小高度 138px。</li>
+          <li>图标区域：84px × 84px，圆角 26px。</li>
+          <li>选中态：向右拔出约 12px，整体缩放 1.03，边框高亮。</li>
+          <li>文字：只保留短标签，例如“生命”“自然”“工程”“人文”。</li>
+          <li>不要额外在页面左上角重复显示“当前主题”。</li>
+        </ul>
+
+        <h3>2. 课程地图 CourseMap</h3>
+        <ul>
+          <li>位置：页面中心主体。</li>
+          <li>形态：五个圆形课程节点，虚线连接，呈轻微蜿蜒路径。</li>
+          <li>容器圆角：32px。</li>
+          <li>节点尺寸：120px × 120px。</li>
+          <li>节点图形区域：76px × 76px，圆角 24px。</li>
+          <li>当前可上节点：第一个节点高亮，显示 POKI 引导。</li>
+          <li>未解锁节点：降低饱和度，显示“待解锁 / 锁定”。</li>
+          <li>点击当前节点：进入课程。</li>
+          <li>点击未解锁节点：toast 提示“先从亮起来的小圆点开始吧”。</li>
+        </ul>
+
+        <h3>3. POKI 节点引导</h3>
+        <ul>
+          <li>位置：当前可上节点上方。</li>
+          <li>图形：暂用机器人 icon/emoji，占位 POKI IP。</li>
+          <li>文案：最多 6 个汉字，例如“跟 POKI 来”。</li>
+          <li>动效：上下轻微 bounce，引导孩子看向当前节点。</li>
+          <li>不要再在页面顶部放独立欢迎语。</li>
+        </ul>
+
+        <h3>4. 活动小球 ActivityBubble</h3>
+        <ul>
+          <li>位置：页面右侧中部，垂直排列。</li>
+          <li>保留入口：线下活动、产品理念、风采展馆。</li>
+          <li>删除入口：合作机构。</li>
+          <li>小球尺寸：118px × 118px，圆形。</li>
+          <li>间距：16px。</li>
+          <li>内容：emoji/icon + 2-4字标题。</li>
+          <li>收起按钮：58px × 58px，圆形，位于小球右侧。</li>
+        </ul>
+
+        <h3>5. 活动信息抽屉 ActivityDrawer</h3>
+        <ul>
+          <li>点击活动小球后在首页内弹出，不进入新页面。</li>
+          <li>抽屉宽度建议不超过 370px。</li>
+          <li>抽屉最小高度约 360-440px。</li>
+          <li>结构：关闭按钮、图标、短标签、标题、摘要、三条要点。</li>
+          <li>关闭按钮：42px × 42px，圆形，右上角。</li>
+          <li>抽屉不应覆盖课程地图的关键节点。</li>
+        </ul>
+      </section>
+
+      <section id="interaction" class="doc-section">
+        <h2>交互规则</h2>
+        <ol>
+          <li>用户进入首页后，第一视觉应落在课程地图，而不是标题或按钮。</li>
+          <li>主题切换只通过左侧书签完成，不新增顶部主题确认区域。</li>
+          <li>开始课程只通过当前亮起节点完成，不提供第二个“开始”按钮。</li>
+          <li>未解锁课程节点可以点击，但只提示，不进入课程。</li>
+          <li>活动小球是次级入口，点击后展开抽屉；收起后关闭已打开抽屉。</li>
+          <li>右侧活动入口不包含“合作机构”。</li>
+        </ol>
+      </section>
+
+      <section id="motion" class="doc-section">
+        <h2>动效要求</h2>
+        <ul>
+          <li>主题书签选中：180ms 内完成右移和缩放。</li>
+          <li>当前课程节点：保持轻微高亮，不做强烈闪烁。</li>
+          <li>POKI 引导：1.2s 左右上下浮动循环。</li>
+          <li>活动小球收起：依次向右缩小并淡出，间隔约 80ms。</li>
+          <li>活动抽屉：从右向左滑入，约 260ms。</li>
+          <li>所有动效都服务“引导点击当前节点”，不能抢课程地图注意力。</li>
+        </ul>
+      </section>
+
+      <section id="copy" class="doc-section">
+        <h2>文案规则</h2>
+        <ul>
+          <li>首页不写产品解释，不写 AI 思考过程语。</li>
+          <li>不再出现“点亮第一关，跟 POKI 开始”。</li>
+          <li>不再出现“主题 / 生命科学”这种二次确认文案。</li>
+          <li>节点引导文案必须靠近节点，例如“跟 POKI 来”。</li>
+          <li>活动小球标题控制在 2-4 字：线下活动、产品理念、风采展馆。</li>
+        </ul>
+      </section>
+
+      <section id="acceptance" class="doc-section">
+        <h2>验收标准</h2>
+        <ol>
+          <li>首页顶部没有“点亮第一关，跟 POKI 开始”。</li>
+          <li>课程地图上方没有主题二次提示和紫色开始按钮。</li>
+          <li>课程地图在页面视觉中心区域，不下沉。</li>
+          <li>点击当前亮起课程节点可以进入课程。</li>
+          <li>点击未解锁课程节点只出现 toast。</li>
+          <li>右侧活动小球只剩三个：线下活动、产品理念、风采展馆。</li>
+          <li>活动小球中不再出现合作机构。</li>
+          <li>页面仍然保持低龄友好：图像优先、文字少、操作入口单一。</li>
+        </ol>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+

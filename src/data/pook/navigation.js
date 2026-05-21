@@ -1,4 +1,5 @@
 export const screens = [
+  { id: "team-select", title: "选择上课小队" },
   { id: "home", title: "POOK 玩学首页" },
   { id: "shop", title: "套件商城" },
   { id: "course", title: "探索更多课程" },

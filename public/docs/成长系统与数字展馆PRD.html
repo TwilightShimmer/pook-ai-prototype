@@ -1,0 +1,40 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>成长系统与数字展馆PRD</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <aside class="page-sidebar">
+      <a class="back-link" href="index.html">返回目录</a>
+      <nav>
+        <p>目录</p>
+        <ul><li><a href='#文档信息'>文档信息</a></li><li><a href='#价值摘要'>价值摘要</a></li><li><a href='#1-背景'>1. 背景</a></li><li><a href='#2-问题定义'>2. 问题定义</a></li><li><a href='#3-目标'>3. 目标</a></li><li><a href='#4-版本范围'>4. 版本范围</a></li><li><a href='#5-方案设计'>5. 方案设计</a></li><li><a href='#6-关键规则'>6. 关键规则</a></li><li><a href='#7-数据要求'>7. 数据要求</a></li><li><a href='#8-验收标准'>8. 验收标准</a></li><li><a href='#9-暂不纳入'>9. 暂不纳入</a></li></ul>
+      </nav>
+    </aside>
+    <main class="page-main">
+      <header class="doc-hero">
+        <span class="hero-chip">PRD / HTML</span>
+        <h1>成长系统与数字展馆PRD</h1>
+      </header>
+      
+      <section class="reading-guide">
+        <div>
+          <span>阅读说明</span>
+          <strong>先看结论，再看细节。</strong>
+          <p>这份文档围绕《成长系统与数字展馆PRD》展开，重点不是堆功能，而是把模糊讨论收口成可判断、可协作、可开发或可验收的产品依据。</p>
+        </div>
+        <ul>
+          <li>简单摘要：先确认本文解决的问题、核心结论和适用版本。</li>
+          <li>PM价值：把真实场景、用户问题、业务规则和执行边界讲清楚，减少团队理解偏差。</li>
+          <li>使用方式：老板看结论和风险，设计看页面目标，开发看规则和验收口径。</li>
+        </ul>
+      </section><section id='文档信息' class='doc-section'><h2>文档信息</h2><section class='meta-grid'><article class='meta-card'><span>文档状态</span><strong>已整理</strong></article><article class='meta-card'><span>需求优先级</span><strong>P1</strong></article><article class='meta-card'><span>适用版本</span><strong>β后续扩展</strong></article><article class='meta-card'><span>关联原型</span><strong>待纳入 <code>VUE3-β原型</code></strong></article><article class='meta-card'><span>关联目录</span><strong><code>../VUE3-β原型</code></strong></article><article class='meta-card'><span>最近更新时间</span><strong>2026-05-12</strong></article></section></section><section id='价值摘要' class='doc-section'><h2>价值摘要</h2><section class='value-grid'><article class='value-card'><span>01</span><p>这份需求在解决：只有成长记录还不够，缺少可收藏、可展示、可持续激励的成果体系问题。</p></article><article class='value-card'><span>02</span><p>这份需求值得做：它能同时增强孩子的收集感、家长的感知度和机构的长期复课动力。</p></article><article class='value-card'><span>03</span><p>这份需求体现的产品判断：成长负责记录过程，数字展馆负责收藏成果，这两套系统应该拆开设计。</p></article></section></section><section id='1-背景' class='doc-section'><h2>1. 背景</h2><p>我认为只做“成长记录”还不够。 还应该再加一个“数字展馆”。</p><p>原因很简单：</p><ol><li>成长页解决的是过程记录</li><li>数字展馆解决的是成果收藏</li></ol><p>这两个东西不一样。 应该拆开做。</p><hr /></section><section id='2-问题定义' class='doc-section'><h2>2. 问题定义</h2><p>如果只有成长记录页，会有几个问题：</p><ol><li>孩子缺少可收集的成果感</li><li>单节课结果不够有记忆点</li><li>家长看到的是记录，不一定能感知收藏和高光</li><li>课程之间缺少长期积累机制</li></ol><hr /></section><section id='3-目标' class='doc-section'><h2>3. 目标</h2><p>我希望同时建立两套系统：</p><ol><li>成长系统：记录上课过程</li><li>数字展馆：收藏课堂成果</li></ol><p>一句话说：</p><p><strong>成长解决“我学了什么”，展馆解决“我收集到了什么”。</strong></p><hr /></section><section id='4-版本范围' class='doc-section'><h2>4. 版本范围</h2><p>本需求覆盖：</p><ol><li>成长页</li><li>数字展馆页</li><li>纪念卡发放规则</li><li>闪卡升级规则</li><li>与课堂闭环的衔接方式</li></ol><hr /></section><section id='5-方案设计' class='doc-section'><h2>5. 方案设计</h2><h3>5.1 成长页</h3><p>定位：</p><ul><li>上课过程记录页</li></ul><p>主要回答：</p><ul><li>我上过什么课</li><li>我做了什么</li><li>我有哪些表现</li></ul><p>适合承载：</p><ul><li>上课时间线</li><li>完成任务</li><li>作品照片</li><li>能力标签</li><li>课堂评价</li></ul><h3>5.2 数字展馆页</h3><p>定位：</p><ul><li>纪念卡收藏页</li></ul><p>主要回答：</p><ul><li>我收集到了什么</li><li>哪些课我已经完成了</li><li>哪张卡是这个主题里最亮眼的</li></ul><p>适合承载：</p><ul><li>课程纪念卡</li><li>普通卡 / 闪卡</li><li>主题分馆</li><li>收集进度</li></ul><hr /></section><section id='6-关键规则' class='doc-section'><h2>6. 关键规则</h2><h3>6.1 发卡规则</h3><p>每上完一节课，发一张对应的纪念卡。</p><p>例如：</p><ul><li>上完“犀牛洗澡”</li><li>发一张“犀牛卡”</li></ul><h3>6.2 重复上课规则</h3><p>重复上同一节课，不重复获得卡片。</p><h3>6.3 闪卡规则</h3><p>每上完一个主题的课程后， 把这个主题里表现最好的一节课对应的卡，升级为闪卡。</p><h3>6.4 闪卡数量规则</h3><p>建议：</p><p><strong>每个主题最多 1 张闪卡</strong></p><h3>6.5 重复上课后的处理</h3><p>建议：</p><ul><li>不重复发普通卡</li><li>但允许刷新“主题最佳”</li></ul><hr /></section><section id='7-数据要求' class='doc-section'><h2>7. 数据要求</h2><p>每张卡至少包含：</p><ol><li>课程名</li><li>主题名</li><li>IP / 课程图案</li><li>获得日期</li><li>卡片状态</li></ol><p>建议预留：</p><ol><li>作品图缩略图</li><li>课程徽章</li><li>高光标签</li></ol><hr /></section><section id='8-验收标准' class='doc-section'><h2>8. 验收标准</h2><ol><li>每节课结束可发一张纪念卡</li><li>重复上课不会重复发卡</li><li>每个主题最多 1 张闪卡</li><li>成长页和数字展馆页职责分开</li><li>孩子可以清楚看到“我完成了什么”和“我收集到了什么”</li></ol><hr /></section><section id='9-暂不纳入' class='doc-section'><h2>9. 暂不纳入</h2><p>这轮先不做：</p><ol><li>复杂算法评定最佳课</li><li>多人社交交换卡片</li><li>大型展馆互动玩法</li></ol><p>先把“记录 + 收藏 + 高光”这条基本链路跑通。</p></section>
+    </main>
+  </div>
+</body>
+</html>
+

@@ -28,6 +28,7 @@ import ResultScreen from "./screens/ResultScreen.vue";
 import ShareScreen from "./screens/ShareScreen.vue";
 import ShopScreen from "./screens/ShopScreen.vue";
 import TeacherScreen from "./screens/TeacherScreen.vue";
+import TeamSelectScreen from "./screens/TeamSelectScreen.vue";
 import WelcomeScreen from "./screens/WelcomeScreen.vue";
 
 const store = createPookAppStore();
@@ -55,9 +56,10 @@ onBeforeUnmount(() => {
 <template>
   <div class="pook-app-shell">
     <main class="pook-app" :class="{ immersive: store.isImmersive.value }" aria-label="POOK AI App 体验原型">
-      <AppChrome />
-      <AppDock />
+      <AppChrome v-if="store.currentScreen.value !== 'team-select'" />
+      <AppDock v-if="store.currentScreen.value !== 'team-select'" />
 
+      <TeamSelectScreen />
       <HomeTestScreen />
       <ShopScreen />
       <CourseScreen />

@@ -1,0 +1,40 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>课程见面识别与自动分工PRD</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <aside class="page-sidebar">
+      <a class="back-link" href="index.html">返回目录</a>
+      <nav>
+        <p>目录</p>
+        <ul><li><a href='#文档信息'>文档信息</a></li><li><a href='#价值摘要'>价值摘要</a></li><li><a href='#1-背景'>1. 背景</a></li><li><a href='#2-问题定义'>2. 问题定义</a></li><li><a href='#3-目标'>3. 目标</a></li><li><a href='#4-版本范围'>4. 版本范围</a></li><li><a href='#5-方案设计'>5. 方案设计</a></li><li><a href='#6-关键规则'>6. 关键规则</a></li><li><a href='#7-数据-状态要求'>7. 数据 / 状态要求</a></li><li><a href='#8-验收标准'>8. 验收标准</a></li><li><a href='#9-暂不纳入'>9. 暂不纳入</a></li></ul>
+      </nav>
+    </aside>
+    <main class="page-main">
+      <header class="doc-hero">
+        <span class="hero-chip">PRD / HTML</span>
+        <h1>课程见面识别与自动分工PRD</h1>
+      </header>
+      
+      <section class="reading-guide">
+        <div>
+          <span>阅读说明</span>
+          <strong>先看结论，再看细节。</strong>
+          <p>这份文档围绕《课程见面识别与自动分工PRD》展开，重点不是堆功能，而是把模糊讨论收口成可判断、可协作、可开发或可验收的产品依据。</p>
+        </div>
+        <ul>
+          <li>简单摘要：先确认本文解决的问题、核心结论和适用版本。</li>
+          <li>PM价值：把真实场景、用户问题、业务规则和执行边界讲清楚，减少团队理解偏差。</li>
+          <li>使用方式：老板看结论和风险，设计看页面目标，开发看规则和验收口径。</li>
+        </ul>
+      </section><section id='文档信息' class='doc-section'><h2>文档信息</h2><section class='meta-grid'><article class='meta-card'><span>文档状态</span><strong>已整理</strong></article><article class='meta-card'><span>需求优先级</span><strong>P0</strong></article><article class='meta-card'><span>适用版本</span><strong>β版</strong></article><article class='meta-card'><span>关联原型</span><strong><code>VUE3-β原型</code></strong></article><article class='meta-card'><span>关联目录</span><strong><code>../VUE3-β原型</code></strong></article><article class='meta-card'><span>最近更新时间</span><strong>2026-05-13</strong></article></section></section><section id='价值摘要' class='doc-section'><h2>价值摘要</h2><section class='value-grid'><article class='value-card'><span>01</span><p>这份需求在解决：从选课直接跳到欢迎页过快，缺少课堂“人已到齐、角色已分配”的正式开始感。</p></article><article class='value-card'><span>02</span><p>这份需求值得做：它能把线下上课现场、拍照识别、多人协作分工自然接进课堂主流程。</p></article><article class='value-card'><span>03</span><p>这份需求体现的产品判断：低龄课堂开始前，需要先完成“看见彼此、确认人数、进入角色”这一步，而不是一上来就讲任务。</p></article></section></section><section id='1-背景' class='doc-section'><h2>1. 背景</h2><p>我希望在选课和欢迎之间，加一个新的环节。 这个环节更像正式开始上课前的“见面”。</p><p>它要完成两件事：</p><ol><li>识别今天是谁来上课</li><li>给每个小朋友分配一个清楚的课堂角色</li></ol><p>一句话说：</p><p><strong>先见面，再开始。</strong></p><hr /></section><section id='2-问题定义' class='doc-section'><h2>2. 问题定义</h2><p>现在从选课直接进入欢迎页，会有几个问题：</p><ol><li>缺少真实课堂开始前的过渡</li><li>多人一起上课时，没有一个明确的角色分工时刻</li><li>没有把线下课堂里的“拍照识别”这一动作产品化</li><li>欢迎页一开始就讲任务，节奏偏快</li></ol><hr /></section><section id='3-目标' class='doc-section'><h2>3. 目标</h2><p>这个环节要同时完成四件事：</p><ol><li>告诉孩子：POKI 已经看见你们了</li><li>告诉老师 / 助教：今天一共有几位学生</li><li>给每位学生明确编号和角色</li><li>不增加新的点击负担，流程自动推进</li></ol><hr /></section><section id='4-版本范围' class='doc-section'><h2>4. 版本范围</h2><p>本需求覆盖：</p><ol><li>在选课和欢迎之间插入新节点</li><li>节点命名与流程展示</li><li>视频流画框主视觉</li><li>拍照后的左右分屏布局</li><li>1-4 人课堂角色分工展示</li><li>自动推进与页面动效</li><li>根据实际入镜儿童自动确定上课人数</li></ol><hr /></section><section id='5-方案设计' class='doc-section'><h2>5. 方案设计</h2><h3>5.1 节点命名</h3><p>流程节点采用二字简称。 本版建议命名为：</p><ul><li>见面</li></ul><p>它比“识别”更温和，也更符合低龄课堂气氛。</p><h3>5.2 首屏状态</h3><p>进入本环节后，页面主视觉先以视频流画框为中心。</p><p>页面重点：</p><ol><li>一个大的视频流画框</li><li>轻提示文案</li><li>识别进行中的动态状态</li></ol><p>这个阶段不要求孩子或助教点击屏幕。</p><h3>5.3 拍照后状态</h3><p>拍照完成后，页面从单列转为左右分屏：</p><ul><li>左侧：缩小后的实时视频流 / 拍照画框</li><li>右侧：角色分工面板</li></ul><p>右侧分工面板内容：</p><ol><li>学生按编号排列</li><li>编号范围为 1-4 号</li><li>最少 1 位学生，最多 4 位学生</li><li>每位学生对应一个专属角色</li></ol><p>这里不需要提前选择人数。 系统应该根据实际进入画框的儿童数量，自动确定本节课的小朋友人数。</p><p>如果有成人误入摄像头画面，系统应该优先识别儿童。 成人不计入上课成员，也不分配编号和课堂角色。</p><p>如果入镜儿童超过 4 人，本轮最多只纳入 4 位儿童。</p><h3>5.4 角色分工建议</h3><p>本版建议预置四个角色：</p><ol><li>建造家</li><li>指挥者</li><li>观察员</li><li>分享员</li></ol><p>角色方向要符合乐高 STEAM 课堂的多人协作逻辑，不做纯娱乐化标签。</p><h3>5.5 自动推进</h3><p>整个环节不要求点击。</p><p>建议节奏：</p><ol><li>进入页面后，先展示视频识别状态</li><li>若干秒后，自动完成拍照</li><li>页面平滑切换到左右分屏</li><li>再停留若干秒，让大家看清编号和角色</li><li>自动进入欢迎页</li></ol><hr /></section><section id='6-关键规则' class='doc-section'><h2>6. 关键规则</h2><ol><li>本环节必须位于“选课”和“欢迎”之间</li><li>节点名称使用二字简称</li><li>主视觉必须先是视频流画框</li><li>拍照后必须切到左右分屏</li><li>分工最多支持 4 人</li><li>全流程默认自动推进，不新增点击交互</li><li>动效必须平滑，不能生硬闪切</li><li>不需要提前选择上课人数</li><li>上课人数由实际入镜儿童决定</li><li>优先识别儿童，成人误入画面时不应被分配学生编号和课堂角色</li><li>如果入镜儿童超过 4 人，本轮只识别并分配前 4 位儿童</li></ol><hr /></section><section id='7-数据-状态要求' class='doc-section'><h2>7. 数据 / 状态要求</h2><p>至少需要支持：</p><ol><li>当前课堂人数</li><li>学生编号列表</li><li>每个编号对应的角色</li><li>当前阶段状态：</li></ol><ul><li>识别中</li><li>已拍照</li><li>已分工</li></ul><ol><li>自动推进计时</li></ol><p>人数识别还需要区分：</p><ol><li>入镜对象总数</li><li>儿童对象数量</li><li>被纳入本节课的儿童列表</li><li>被忽略的成人 / 非学生对象</li><li>超过 4 人时的截断状态</li></ol><hr /></section><section id='8-验收标准' class='doc-section'><h2>8. 验收标准</h2><ol><li>课程流程中新增“见面”节点</li><li>进入欢迎页前一定先经过该环节</li><li>页面首屏主视觉是视频流画框</li><li>拍照后页面变成左右分屏</li><li>右侧展示 1-4 号学生及对应角色</li><li>页面切换包含平滑缩放、滑动或展开动效</li><li>不点击屏幕也能自动进入欢迎页</li><li>不需要提前选择人数</li><li>实际入镜儿童数量会决定本节课学生数量</li><li>成人误入摄像头时，不会被作为学生编号展示</li><li>入镜儿童超过 4 人时，最多只展示并分配 4 位学生</li></ol><hr /></section><section id='9-暂不纳入' class='doc-section'><h2>9. 暂不纳入</h2><p>这轮先不做：</p><ol><li>真实摄像头权限接入</li><li>真人脸识别算法</li><li>学生身份持久化</li><li>角色手动编辑</li></ol><p>先把“见面 -&gt; 分工 -&gt; 自动进入课堂”的体验跑顺。</p></section>
+    </main>
+  </div>
+</body>
+</html>
+

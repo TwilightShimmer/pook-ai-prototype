@@ -18,10 +18,11 @@ import { createPookUiControllers } from "./pook/usePookUi";
 const pookAppStoreKey = Symbol("pook-app-store");
 
 export function createPookAppStore() {
-  const currentScreen = ref("home");
-  const previousScreen = ref("home");
+  const currentScreen = ref("team-select");
+  const previousScreen = ref("team-select");
   const classSize = ref(3);
-  const activeTeamId = ref("team-1");
+  const activeTeamId = ref(null);
+  const hasSelectedTeam = computed(() => Boolean(activeTeamId.value));
   const teamRecords = ref([
     {
       id: "team-1",
@@ -393,6 +394,12 @@ export function createPookAppStore() {
 
   function navigateTo(screenId) {
     if (!screens.some((screen) => screen.id === screenId)) return;
+    if (!hasSelectedTeam.value && screenId !== "team-select") {
+      currentScreen.value = "team-select";
+      previousScreen.value = "team-select";
+      ui.showToast("请先选择本次上课的小队");
+      return;
+    }
     const isScreenChanged = currentScreen.value !== screenId;
     if (screenId === "teacher" && isScreenChanged) {
       ui.openTeacherGate();
@@ -578,6 +585,15 @@ export function createPookAppStore() {
     ui.showToast(`已切换到 ${currentTeam.value.name}`);
   }
 
+  function selectTeamAndEnterHome(teamId) {
+    if (!teamRecords.value.some((team) => team.id === teamId)) return;
+    activeTeamId.value = teamId;
+    previousScreen.value = "team-select";
+    currentScreen.value = "home";
+    ui.showPageTransition(`已进入 ${currentTeam.value.name}`);
+    ui.resetReward();
+  }
+
   function redeemShopReward(reward) {
     if (!reward?.id) return false;
     if (redeemedRewardIds.value.includes(reward.id)) {
@@ -607,6 +623,7 @@ export function createPookAppStore() {
     classSize,
     strategy,
     activeTeamId,
+    hasSelectedTeam,
     teamRecords,
     currentTeam,
     gemBalance,
@@ -664,6 +681,7 @@ export function createPookAppStore() {
     updateLessonCue,
     selectClassSize,
     selectTeam,
+    selectTeamAndEnterHome,
     setCourseAge: course.setCourseAge,
     setScienceTheme: course.setScienceTheme,
     startBetaLessonByTheme: course.startBetaLessonByTheme,

@@ -1,0 +1,167 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>机构课堂小队账户与我的页面重构PRD</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <aside class="page-sidebar">
+      <a class="back-link" href="index.html">返回目录</a>
+      <nav>
+        <p>目录</p>
+        <ul>
+          <li><a href="#info">文档信息</a></li>
+          <li><a href="#problem">问题判断</a></li>
+          <li><a href="#goal">目标</a></li>
+          <li><a href="#scope">功能范围</a></li>
+          <li><a href="#data">数据结构</a></li>
+          <li><a href="#pages">页面改动</a></li>
+          <li><a href="#rules">关键规则</a></li>
+          <li><a href="#acceptance">验收标准</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="page-main">
+      <header class="doc-hero">
+        <span class="hero-chip">PRD / 机构课堂账户</span>
+        <h1>机构课堂小队账户与“我的”页面重构 PRD</h1>
+        <p>产品场景不是单个孩子独立使用，而是合作机构中多个小队一起上课。</p>
+      </header>
+
+      
+      <section class="reading-guide">
+        <div>
+          <span>阅读说明</span>
+          <strong>先看结论，再看细节。</strong>
+          <p>这份文档围绕《机构课堂小队账户与“我的”页面重构 PRD》展开，重点不是堆功能，而是把模糊讨论收口成可判断、可协作、可开发或可验收的产品依据。</p>
+        </div>
+        <ul>
+          <li>简单摘要：先确认本文解决的问题、核心结论和适用版本。</li>
+          <li>PM价值：把真实场景、用户问题、业务规则和执行边界讲清楚，减少团队理解偏差。</li>
+          <li>使用方式：老板看结论和风险，设计看页面目标，开发看规则和验收口径。</li>
+        </ul>
+      </section><section id="info" class="doc-section">
+        <h2>文档信息</h2>
+        <section class="meta-grid">
+          <article class="meta-card"><span>优先级</span><strong>P0</strong></article>
+          <article class="meta-card"><span>使用者</span><strong>老师 / 助教</strong></article>
+          <article class="meta-card"><span>适用场景</span><strong>合作机构课堂</strong></article>
+          <article class="meta-card"><span>关联页面</span><strong>我的 / 成长 / 结课卡 / 商城</strong></article>
+          <article class="meta-card"><span>原型目录</span><strong><code>VUE3-β原型</code></strong></article>
+          <article class="meta-card"><span>更新时间</span><strong>2026-05-15</strong></article>
+        </section>
+      </section>
+
+      <section id="problem" class="doc-section">
+        <h2>问题判断</h2>
+        <p>现在不能再把“我的”理解成儿童个人中心。</p>
+        <p>真实场景是：同一个合作机构里，多个小队同时上课。每个小队会有不同的课堂表现、奖励、成长记录和作品沉淀。</p>
+        <section class="value-grid">
+          <article class="value-card"><span>01</span><p>如果所有星星、经验、宝石都存在同一个账号里，老师看不出是哪支小队获得的。</p></article>
+          <article class="value-card"><span>02</span><p>成长中心如果不分小队，数字展馆和纪念卡就会混在一起。</p></article>
+          <article class="value-card"><span>03</span><p>进入课程前必须先确认小队，否则后续所有课堂数据都会失去归属。</p></article>
+        </section>
+      </section>
+
+      <section id="goal" class="doc-section">
+        <h2>目标</h2>
+        <ol>
+          <li>把“我的”定义为老师使用的小队管理台。</li>
+          <li>进入课程前支持选择 1-4 号小队。</li>
+          <li>星星、经验、宝石、纪念卡、商城兑换都按小队独立记录。</li>
+          <li>成长中心默认展示当前选中的小队。</li>
+          <li>让老师能快速判断：现在是哪支小队在上课。</li>
+        </ol>
+      </section>
+
+      <section id="scope" class="doc-section">
+        <h2>功能范围</h2>
+        <h3>本期必须做</h3>
+        <ul>
+          <li>“我的”页面展示 1-4 号小队。</li>
+          <li>老师可以点击切换当前小队。</li>
+          <li>顶部状态栏展示当前小队。</li>
+          <li>成长中心按当前小队展示。</li>
+          <li>结课奖励进入当前小队账户。</li>
+          <li>积分商城消耗当前小队宝石。</li>
+        </ul>
+
+        <h3>本期不做</h3>
+        <ul>
+          <li>真实后台账号登录。</li>
+          <li>真实机构和班级绑定。</li>
+          <li>真实儿童身份识别和成员档案。</li>
+          <li>跨设备云端同步。</li>
+        </ul>
+      </section>
+
+      <section id="data" class="doc-section">
+        <h2>数据结构</h2>
+        <p>产品的数据单位从“唯一账号”调整为“机构账号下的小队”。</p>
+        <section class="feature-grid">
+          <article class="feature-card"><h3>小队基础信息</h3><p>小队编号、小队名称、成员人数、老师备注。</p></article>
+          <article class="feature-card"><h3>奖励账户</h3><p>星星、经验、宝石、完成课程数量。</p></article>
+          <article class="feature-card"><h3>成长资产</h3><p>纪念卡、闪卡、课堂作品、课堂评价。</p></article>
+          <article class="feature-card"><h3>兑换记录</h3><p>积分商城兑换过的贴纸、勋章、卡片等小奖励。</p></article>
+        </section>
+      </section>
+
+      <section id="pages" class="doc-section">
+        <h2>页面改动</h2>
+        <h3>我的</h3>
+        <p>从“个人中心”改为“小队管理台”。页面重点是选队和看队。</p>
+        <ul>
+          <li>左侧展示当前小队。</li>
+          <li>中间展示 1-4 号小队切换卡片。</li>
+          <li>右侧展示当前小队账户：星星、经验、宝石、纪念卡。</li>
+          <li>保留进入成长、老师设置、开始上课的入口。</li>
+        </ul>
+
+        <h3>成长中心</h3>
+        <p>成长中心不展示全局数据，只展示当前小队数据。</p>
+        <ul>
+          <li>顶部标识当前小队。</li>
+          <li>支持在成长中心内快速切换小队。</li>
+          <li>纪念卡列表按小队过滤。</li>
+        </ul>
+
+        <h3>结课成长卡</h3>
+        <p>结课奖励要明确进入当前小队账户。</p>
+      </section>
+
+      <section id="rules" class="doc-section">
+        <h2>关键规则</h2>
+        <ol>
+          <li>进入课程前，老师应该先选择小队。</li>
+          <li>没有选择时，默认使用 1 号小队。</li>
+          <li>完成课程后，奖励只进入当前小队。</li>
+          <li>重复上同一节课，不重复获得纪念卡，但可以继续获得宝石。</li>
+          <li>商城兑换只扣当前小队的宝石。</li>
+          <li>老师切换小队后，成长中心和宝石余额立即切换。</li>
+          <li>进入“我的”页面、点击顶部当前小队、在成长中心切换小队时，都要先完成算术验证码，避免小朋友误入老师操作。</li>
+          <li>老师已经通过验证码进入“我的”页面后，页内小队切换不再重复验证，保证课堂操作效率。</li>
+        </ol>
+      </section>
+
+      <section id="acceptance" class="doc-section">
+        <h2>验收标准</h2>
+        <ol>
+          <li>“我的”页面不再像儿童个人中心，而是老师的小队管理台。</li>
+          <li>可切换 1-4 号小队。</li>
+          <li>顶部显示当前小队。</li>
+          <li>成长中心展示当前小队的星星、经验、宝石、纪念卡。</li>
+          <li>结课后奖励进入当前小队。</li>
+          <li>切换小队后，不同小队的数据不会混在一起。</li>
+          <li>非“我的”页内的小队切换入口都先出现算术验证码，验证通过后才展示小队切换弹窗。</li>
+          <li>“我的”页内小队卡片可直接切换，不出现重复验证码。</li>
+        </ol>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
