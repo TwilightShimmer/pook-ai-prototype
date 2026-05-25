@@ -50,7 +50,7 @@
           <li>完成课程后生成课堂完成记录和成长卡。</li>
           <li>奖励入账：星星、经验、宝石、纪念卡。</li>
           <li>更新课程解锁状态和上次闯关耗时。</li>
-          <li>成长中心读取当前小队历史记录。</li>
+          <li>成长中心按三个视图读取当前小队数据：卡片收集册、成长记录册、小队总览。</li>
           <li>教师验证后进入商城，完成兑换和扣减宝石。</li>
           <li>设备测试、设置页和错误态补齐。</li>
           <li>完整链路联调验收。</li>
@@ -94,6 +94,10 @@
           <li>同一小队重复完成同一课程：不重复发放纪念卡和经验，只发放10宝石。</li>
           <li>纪念卡按team_id + course_id去重；已拥有时不重复创建收藏关系。</li>
           <li>成长卡记录保存到team_id下，成长中心按小队查询。</li>
+          <li>成长中心不再是一个混合列表，拆成三个数据视图：卡片收集册、成长记录册、小队总览。</li>
+          <li>卡片收集册按课程主题分组展示纪念卡，未获得课程也需要返回占位状态，方便前端展示收集进度。</li>
+          <li>成长记录册按课堂完成记录展示每堂课的成长卡/风采内容，数据来源是lesson_record + growth_card_record。</li>
+          <li>小队总览只展示聚合数据，例如纪念卡数、星星、经验、宝石、完成课程数、最近表现。</li>
         </ul>
 
         <h3>商城兑换</h3>
@@ -138,8 +142,19 @@
         <h3>growth_card_record</h3>
         <p><code>growth_card_id</code> <code>team_id</code> <code>course_id</code> <code>lesson_record_id</code> <code>summary</code> <code>stars_awarded</code> <code>xp_awarded</code> <code>gems_awarded</code> <code>is_first_completion</code> <code>created_at</code></p>
 
+        <h3>card_catalog</h3>
+        <p><code>card_id</code> <code>course_id</code> <code>theme_id</code> <code>title</code> <code>visual_key</code> <code>badge_name</code> <code>card_order</code> <code>status</code></p>
+
         <h3>card_collection</h3>
-        <p><code>team_id</code> <code>card_id</code> <code>course_id</code> <code>earned_at</code> <code>is_flash_card</code> <code>source_lesson_record_id</code></p>
+        <p><code>team_id</code> <code>card_id</code> <code>course_id</code> <code>earned_at</code> <code>is_flash_card</code> <code>source_lesson_record_id</code> <code>last_upgraded_at</code></p>
+
+        <h3>growth_center_view</h3>
+        <p>不一定需要真实建表，可以由后端聚合返回。至少包含三块：<code>overview</code>、<code>card_album</code>、<code>growth_records</code>。</p>
+        <ul>
+          <li><code>overview</code>：小队星星、经验、宝石、完成课程数、纪念卡数、最近表现。</li>
+          <li><code>card_album</code>：按theme_id返回主题、课程卡片、owned状态、is_flash_card状态、收集进度。</li>
+          <li><code>growth_records</code>：按lesson_record返回课堂成长卡、课程名、主题、完成时间、奖励、能力标签、风采摘要。</li>
+        </ul>
 
         <h3>shop_item / shop_exchange</h3>
         <p><code>item_id</code> <code>name</code> <code>cost_gems</code> <code>status</code> / <code>exchange_id</code> <code>team_id</code> <code>item_id</code> <code>cost_gems</code> <code>exchange_status</code> <code>exchanged_at</code></p>
@@ -156,8 +171,10 @@
           <li><code>GET /teams/{teamId}/course-progress</code>：获取小队课程解锁状态。</li>
           <li><code>POST /lesson-records/start</code>：创建课堂开始记录。</li>
           <li><code>POST /lesson-records/{recordId}/complete</code>：完成课程并触发奖励、成长卡、解锁。</li>
-          <li><code>GET /teams/{teamId}/growth-cards</code>：查询小队成长卡。</li>
-          <li><code>GET /teams/{teamId}/cards</code>：查询小队纪念卡收藏。</li>
+          <li><code>GET /teams/{teamId}/growth-center</code>：查询成长中心聚合数据，包含overview、card_album、growth_records。</li>
+          <li><code>GET /teams/{teamId}/growth-cards</code>：查询小队成长卡记录，用于成长记录册。</li>
+          <li><code>GET /teams/{teamId}/cards</code>：查询小队纪念卡收藏，用于卡片收集册。</li>
+          <li><code>GET /teams/{teamId}/card-album?themeId=xxx</code>：按主题查询卡片收集册，返回已获得和未获得卡片的展示状态。</li>
           <li><code>GET /shop/items</code>：查询商城商品。</li>
           <li><code>POST /shop/exchanges</code>：兑换商品，校验当前小队是否已兑换，扣减宝石并生成记录。</li>
           <li><code>GET /teams/{teamId}/shop-exchanges</code>：查询小队兑换记录。</li>
@@ -180,7 +197,10 @@
           <li>课程小球展示上次闯关耗时。</li>
           <li>商城兑换必须通过教师验证，兑换成功后扣减宝石并生成记录。</li>
           <li>同一小队已兑换过的商品按钮展示为灰色“已售罄”，且不可重复兑换。</li>
-          <li>成长中心能看到当前小队的历史成长卡和纪念卡。</li>
+          <li>成长中心默认进入卡片收集册，且只展示当前小队的数据。</li>
+          <li>卡片收集册支持按课程主题切换，能展示每个主题下已收集/未收集卡片和收集进度。</li>
+          <li>成长记录册能看到当前小队每堂课的成长卡/风采记录。</li>
+          <li>小队总览单独展示聚合数据，不挤占卡片收集册和成长记录册。</li>
           <li>照片和动作数据不在前端展示，但后端可保存存储key。</li>
           <li>“我的-隐私”展示课堂数据采集与安全加密说明。</li>
         </ul>
