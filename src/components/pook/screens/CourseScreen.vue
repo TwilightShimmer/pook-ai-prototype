@@ -4,6 +4,18 @@ import { usePookAppStore } from "../../../composables/usePookApp";
 const store = usePookAppStore();
 const scienceStageRef = ref(null);
 const lastThemeSwitchAt = ref(0);
+const themeEmojiMap = {
+  life: "🐣",
+  nature: "🌦️",
+  engineering: "🛠️",
+  humanity: "🏘️",
+};
+const lessonEmojiMap = {
+  polar: "🐻‍❄️",
+  wind: "🌬️",
+  rhino: "🦏",
+  community: "🏘️",
+};
 
 function shouldShowGuide(index) {
   if (index !== 0) return false;
@@ -17,14 +29,16 @@ function renderStars(count) {
   return "★".repeat(count) + "☆".repeat(Math.max(0, 4 - count));
 }
 
-function scienceNodeClass(index) {
-  const pattern = ["lane-a", "lane-b", "lane-c", "lane-d", "lane-e"];
-  return pattern[index % pattern.length];
+function themeArtClass(theme) {
+  return `theme-${theme.art || theme.key}`;
 }
 
-function scienceNodeStyle(index) {
-  const offsets = ["10%", "52%", "70%", "26%", "58%"];
-  return { "--node-offset": offsets[index % offsets.length] };
+function themeEmoji(theme) {
+  return themeEmojiMap[theme.key] ?? "✨";
+}
+
+function lessonEmoji(lesson) {
+  return lessonEmojiMap[lesson.visual] ?? "✨";
 }
 
 function handleScienceStageWheel(event) {
@@ -97,55 +111,47 @@ function handleScienceStageWheel(event) {
         </div>
         <div
           v-if="store.courseStep.value.isScienceThemeStep"
-          class="science-theme-layout"
+          class="home-test-course-stage course-featured-stage"
         >
-          <aside class="filter-rail science-theme-rail" aria-label="课程主题">
+          <aside class="home-test-theme-rail" aria-label="课程主题">
             <button
               v-for="theme in store.scienceThemeTabs.value"
               :key="theme.key"
-              class="rail-pill science-theme-tab"
+              class="home-test-theme-tab"
               :class="{ active: store.selectedScienceTheme.value === theme.key }"
+              :aria-label="theme.label"
               @click="store.setScienceTheme(theme.key)"
             >
-              <span class="science-theme-tab-copy">
-                <small>{{ theme.summary }}</small>
-                <strong>{{ theme.label }}</strong>
-                <span class="science-theme-stars">难度 {{ renderStars(theme.stars) }}</span>
+              <span class="home-test-theme-art" :class="themeArtClass(theme)" aria-hidden="true">
+                {{ themeEmoji(theme) }}
               </span>
+              <span class="home-test-theme-pill">{{ theme.shortLabel }}</span>
+              <span class="home-test-theme-stars" aria-hidden="true">{{ theme.stars }}★</span>
             </button>
           </aside>
-          <div class="science-theme-panel">
-            <header class="science-theme-header">
-              <p>课程主题</p>
-              <h3>{{ store.activeScienceTheme.value.label }}</h3>
-              <span class="science-theme-header-stars">难度 {{ renderStars(store.activeScienceTheme.value.stars) }}</span>
-            </header>
-            <div class="science-course-journey">
+
+          <div class="home-test-panel">
+            <div class="home-test-lesson-map">
               <div
                 v-for="(option, index) in store.courseOptions.value"
                 :key="`${store.activeScienceTheme.value.key}-${option.label}-${index}`"
-                class="science-course-node"
-                :class="[scienceNodeClass(index), { locked: !option.unlocked, latest: option.latestUnlocked }]"
-                :style="scienceNodeStyle(index)"
+                class="home-test-lesson-node"
+                :class="[`node-${index + 1}`, { locked: !option.unlocked, featured: option.latestUnlocked }]"
               >
                 <button
-                  class="science-node-button"
-                  :class="{ locked: !option.unlocked }"
+                  class="home-test-node-core"
                   @click="store.selectCourseOption(index)"
                 >
-                  <span class="science-node-core">
-                    <i class="choice-visual science-node-visual" :class="option.visual"></i>
-                    <span class="science-node-level">{{ option.level }}</span>
+                  <span v-if="option.latestUnlocked" class="home-test-node-guide">
+                    <span class="home-test-node-guide-emoji">🤖</span>
+                    <span>跟 POKI 来</span>
                   </span>
-                  <span v-if="option.latestUnlocked" class="science-node-guide" aria-hidden="true">
-                    <span class="course-card-guide-emoji">☝️</span>
-                    <span>点这里开始</span>
-                  </span>
+                  <span class="home-test-node-level">{{ option.level }}</span>
+                  <span class="home-test-node-visual" aria-hidden="true">{{ lessonEmoji(option) }}</span>
                 </button>
-                <div class="science-node-copy">
-                  <strong>{{ option.label }}</strong>
-                  <small>{{ option.desc }}</small>
-                  <span class="science-node-pill">{{ option.difficultyText }}</span>
+                <div class="home-test-node-copy">
+                  <strong>{{ option.unlocked ? option.label : "待解锁" }}</strong>
+                  <small>{{ option.unlocked ? option.difficultyText : "先完成上一关" }}</small>
                 </div>
               </div>
             </div>

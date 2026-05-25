@@ -20,7 +20,6 @@ import FreeBuildScreen from "./screens/FreeBuildScreen.vue";
 import GoalsScreen from "./screens/GoalsScreen.vue";
 import GrowthScreen from "./screens/GrowthScreen.vue";
 import HomeTestScreen from "./screens/HomeTestScreen.vue";
-import MeetLayoutTestScreen from "./screens/MeetLayoutTestScreen.vue";
 import MeetScreen from "./screens/MeetScreen.vue";
 import ProfileScreen from "./screens/ProfileScreen.vue";
 import QuestionScreen from "./screens/QuestionScreen.vue";
@@ -63,7 +62,6 @@ onBeforeUnmount(() => {
       <HomeTestScreen />
       <ShopScreen />
       <CourseScreen />
-      <MeetLayoutTestScreen />
       <MeetScreen />
       <WelcomeScreen />
       <GoalsScreen />

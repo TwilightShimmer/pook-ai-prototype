@@ -3,7 +3,6 @@ export const screens = [
   { id: "home", title: "POOK 玩学首页" },
   { id: "shop", title: "套件商城" },
   { id: "course", title: "探索更多课程" },
-  { id: "meet-test", title: "见面布局Test" },
   { id: "meet", title: "见面" },
   { id: "goals", title: "本节课目标" },
   { id: "welcome", title: "课前介绍" },
@@ -45,7 +44,7 @@ export const dockClassScreens = [
   "result",
 ];
 
-export const immersiveScreens = [...linearFlow, "meet-test"];
+export const immersiveScreens = [...linearFlow];
 
 export const progressLabels = {
   meet: "见面",
@@ -76,7 +75,6 @@ export const lessonJourneyMeta = {
 export const dockItems = [
   { id: "home", label: "首页", emoji: "🏠" },
   { id: "course", label: "探索", emoji: "🧭" },
-  { id: "meet-test", label: "见面", emoji: "📷" },
   { id: "shop", label: "商城", emoji: "🎁" },
   { id: "growth", label: "成长", emoji: "🌱" },
   { id: "profile", label: "我的", emoji: "⭐" },
