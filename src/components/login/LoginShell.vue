@@ -1,10 +1,16 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
+const props = defineProps({
+  startAtLogin: {
+    type: Boolean,
+    default: false,
+  },
+});
 const emit = defineEmits(["enter-app"]);
 
 const activePanel = ref("choice");
-const currentStage = ref("opening");
+const currentStage = ref(props.startAtLogin ? "login" : "opening");
 const loginPending = ref(false);
 const openingVideoRef = ref(null);
 const loadingVideoRef = ref(null);
@@ -89,6 +95,7 @@ function handleVideoTap() {
 }
 
 onMounted(() => {
+  if (props.startAtLogin) return;
   const playPromise = openingVideoRef.value?.play();
   if (playPromise?.catch) {
     playPromise.catch(revealLogin);

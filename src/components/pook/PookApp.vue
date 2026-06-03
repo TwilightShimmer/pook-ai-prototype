@@ -13,6 +13,7 @@ import RewardChestOverlay from "./RewardChestOverlay.vue";
 import TaskOverlay from "./TaskOverlay.vue";
 import TeacherGateOverlay from "./TeacherGateOverlay.vue";
 import TeamSwitchGateOverlay from "./TeamSwitchGateOverlay.vue";
+import UpdateAnnouncement from "./UpdateAnnouncement.vue";
 import BlocksScreen from "./screens/BlocksScreen.vue";
 import BuildScreen from "./screens/BuildScreen.vue";
 import CourseScreen from "./screens/CourseScreen.vue";
@@ -30,7 +31,11 @@ import TeacherScreen from "./screens/TeacherScreen.vue";
 import TeamSelectScreen from "./screens/TeamSelectScreen.vue";
 import WelcomeScreen from "./screens/WelcomeScreen.vue";
 
-const store = createPookAppStore();
+const emit = defineEmits(["logout"]);
+
+const store = createPookAppStore({
+  onLogout: () => emit("logout"),
+});
 providePookAppStore(store);
 
 function handleKeydown(event) {
@@ -53,8 +58,22 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="pook-app-shell">
-    <main class="pook-app" :class="{ immersive: store.isImmersive.value }" aria-label="POOK AI App 体验原型">
+  <div
+    class="pook-app-shell"
+    :class="{
+      'theme-cold': store.usesColdTheme.value,
+      'theme-warm': !store.usesColdTheme.value,
+    }"
+  >
+    <main
+      class="pook-app"
+      :class="{
+        immersive: store.isImmersive.value,
+        'theme-cold': store.usesColdTheme.value,
+        'theme-warm': !store.usesColdTheme.value,
+      }"
+      aria-label="POOK AI App 体验原型"
+    >
       <AppChrome v-if="store.currentScreen.value !== 'team-select'" />
       <AppDock v-if="store.currentScreen.value !== 'team-select'" />
 
@@ -84,6 +103,7 @@ onBeforeUnmount(() => {
       <TeacherGateOverlay />
       <TeamSwitchGateOverlay />
       <ExitLessonConfirm />
+      <UpdateAnnouncement />
     </main>
   </div>
 </template>

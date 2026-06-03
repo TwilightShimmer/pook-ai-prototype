@@ -102,6 +102,11 @@ function lessonEmoji(lesson) {
   <section class="screen" :class="{ active: store.currentScreen.value === 'home' }" data-screen="home">
     <div class="home-test-layout">
       <section class="home-test-main">
+        <div class="home-hud-strip" aria-hidden="true">
+          <span>AI COURSE MAP</span>
+          <b>POKI SYNC</b>
+          <i>ONLINE</i>
+        </div>
         <div class="home-test-course-stage">
           <aside class="home-test-theme-rail" aria-label="课程主题">
             <button
@@ -133,6 +138,7 @@ function lessonEmoji(lesson) {
                     <span class="home-test-node-guide-emoji">🤖</span>
                     <span>跟 POKI 来</span>
                   </span>
+                  <span v-if="index === 0" class="home-test-node-status">AI 已点亮</span>
                   <span class="home-test-node-level">{{ lesson.level }}</span>
                   <span class="home-test-node-visual" aria-hidden="true">{{ lessonEmoji(lesson) }}</span>
                 </button>

@@ -17,7 +17,7 @@ import { createPookUiControllers } from "./pook/usePookUi";
 
 const pookAppStoreKey = Symbol("pook-app-store");
 
-export function createPookAppStore() {
+export function createPookAppStore(options = {}) {
   const currentScreen = ref("team-select");
   const previousScreen = ref("team-select");
   const classSize = ref(3);
@@ -89,6 +89,9 @@ export function createPookAppStore() {
   const pendingStepReward = ref(null);
   const resultRewardCollected = ref(false);
   const resultHomeCountdown = ref(15);
+  const updateAnnouncementVisible = ref(false);
+  const updateAnnouncementSeen = ref(false);
+  const updateAnnouncementClosable = ref(false);
   const lessonCueOverrides = ref({});
   const exitLessonConfirm = ref(false);
   const currentCompletionReward = ref({
@@ -143,6 +146,8 @@ export function createPookAppStore() {
   let stepRewardTimer = 0;
   let stepRewardAutoTimer = 0;
   let resultHomeCountdownTimer = 0;
+  let updateAnnouncementTimer = 0;
+  let updateAnnouncementEnableTimer = 0;
 
   function stopResultHomeCountdown() {
     window.clearInterval(resultHomeCountdownTimer);
@@ -158,6 +163,35 @@ export function createPookAppStore() {
   function goHomeFromResult() {
     resetResultHomeCountdown();
     navigateTo("home");
+  }
+
+  function showUpdateAnnouncement() {
+    if (updateAnnouncementSeen.value) return;
+    window.clearTimeout(updateAnnouncementTimer);
+    window.clearTimeout(updateAnnouncementEnableTimer);
+    updateAnnouncementSeen.value = true;
+    updateAnnouncementClosable.value = false;
+    updateAnnouncementVisible.value = true;
+    updateAnnouncementEnableTimer = window.setTimeout(() => {
+      updateAnnouncementClosable.value = true;
+    }, 5000);
+  }
+
+  function closeUpdateAnnouncement() {
+    if (!updateAnnouncementClosable.value) return;
+    window.clearTimeout(updateAnnouncementTimer);
+    window.clearTimeout(updateAnnouncementEnableTimer);
+    updateAnnouncementVisible.value = false;
+    updateAnnouncementClosable.value = false;
+  }
+
+  function showUpdateAnnouncementAfterTransition() {
+    if (updateAnnouncementSeen.value) return;
+    window.clearTimeout(updateAnnouncementTimer);
+    updateAnnouncementVisible.value = false;
+    updateAnnouncementTimer = window.setTimeout(() => {
+      showUpdateAnnouncement();
+    }, 2550);
   }
 
   function startResultHomeCountdown() {
@@ -467,6 +501,10 @@ export function createPookAppStore() {
   }
 
   function requestTopBack() {
+    if (currentScreen.value === "home") {
+      options.onLogout?.();
+      return;
+    }
     if (inLinearFlow.value && currentScreen.value !== "course") {
       exitLessonConfirm.value = true;
       return;
@@ -517,6 +555,7 @@ export function createPookAppStore() {
   const currentLinearIndex = computed(() => linearFlow.indexOf(currentScreen.value));
   const inLinearFlow = computed(() => currentLinearIndex.value >= 0);
   const isImmersive = computed(() => immersiveScreens.includes(currentScreen.value));
+  const usesColdTheme = computed(() => inLinearFlow.value && currentScreen.value !== "result");
   const strategy = computed(() => strategyCopy[classSize.value]);
   const canAdvanceCurrent = computed(() => lessonFlow.canAdvance(currentScreen.value));
   const lessonJourney = computed(() =>
@@ -623,6 +662,7 @@ export function createPookAppStore() {
     previousScreen.value = "team-select";
     currentScreen.value = "home";
     ui.showPageTransition(`已进入 ${currentTeam.value.name}`);
+    showUpdateAnnouncementAfterTransition();
     ui.resetReward();
   }
 
@@ -645,6 +685,8 @@ export function createPookAppStore() {
   function dispose() {
     window.clearTimeout(stepRewardTimer);
     window.clearTimeout(stepRewardAutoTimer);
+    window.clearTimeout(updateAnnouncementTimer);
+    window.clearTimeout(updateAnnouncementEnableTimer);
     stopResultHomeCountdown();
     ui.dispose();
   }
@@ -672,9 +714,12 @@ export function createPookAppStore() {
     lessonTotalXp,
     resultRewardCollected,
     resultHomeCountdown,
+    updateAnnouncementVisible,
+    updateAnnouncementClosable,
     nextActionLabel,
     dockClassScreens,
     isImmersive,
+    usesColdTheme,
     lessonState: lessonFlow.lessonState,
     taskCue: ui.taskCue,
     reward: ui.reward,
@@ -708,6 +753,7 @@ export function createPookAppStore() {
     goHomeFromResult,
     resetResultHomeCountdown,
     startResultHomeCountdown,
+    closeUpdateAnnouncement,
     requestTopBack,
     cancelExitLesson,
     confirmExitLesson,

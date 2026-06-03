@@ -8,9 +8,13 @@ const stage = ref("opening");
 function handleEnterApp() {
   stage.value = "app";
 }
+
+function handleLogout() {
+  stage.value = "login";
+}
 </script>
 
 <template>
-  <LoginShell v-if="stage !== 'app'" @enter-app="handleEnterApp" />
-  <PookApp v-else />
+  <LoginShell v-if="stage !== 'app'" :start-at-login="stage === 'login'" @enter-app="handleEnterApp" />
+  <PookApp v-else @logout="handleLogout" />
 </template>
