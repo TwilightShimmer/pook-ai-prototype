@@ -53,11 +53,15 @@ const store = usePookAppStore();
 
     <button
       class="nav-step primary journey-side-button journey-side-button-right"
-      :disabled="store.navState.value.nextDisabled || store.currentScreen.value === 'result'"
+      :disabled="store.navState.value.nextDisabled"
       :style="{ visibility: store.navState.value.showNext ? 'visible' : 'hidden' }"
-      @click="store.nextScreen"
+      @click="store.currentScreen.value === 'result' ? store.goHomeFromResult() : store.nextScreen()"
     >
-      下一步
+      <template v-if="store.currentScreen.value === 'result'">
+        回首页
+        <span v-if="store.resultRewardCollected.value">（{{ store.resultHomeCountdown.value }}S）</span>
+      </template>
+      <template v-else>下一步</template>
     </button>
   </footer>
 </template>

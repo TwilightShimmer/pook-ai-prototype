@@ -7,43 +7,15 @@ const lesson = computed(() => store.currentLesson.value);
 const completionReward = computed(() => store.currentCompletionReward.value);
 const rewardPopup = ref("none");
 const gemFlying = ref(false);
-const homeCountdown = ref(15);
-const rewardCollected = ref(false);
 
 let gemTimer = 0;
-let homeCountdownTimer = 0;
-
-function stopHomeCountdown() {
-  window.clearInterval(homeCountdownTimer);
-  homeCountdownTimer = 0;
-}
-
-function goHome() {
-  stopHomeCountdown();
-  store.navigateTo("home");
-}
-
-function startHomeCountdown() {
-  stopHomeCountdown();
-  rewardCollected.value = true;
-  homeCountdown.value = 15;
-
-  homeCountdownTimer = window.setInterval(() => {
-    homeCountdown.value -= 1;
-    if (homeCountdown.value <= 0) {
-      goHome();
-    }
-  }, 1000);
-}
 
 watch(
   () => store.currentScreen.value,
   (screenId) => {
     window.clearTimeout(gemTimer);
-    stopHomeCountdown();
+    store.resetResultHomeCountdown();
     gemFlying.value = false;
-    rewardCollected.value = false;
-    homeCountdown.value = 15;
     rewardPopup.value = screenId === "result" ? "card" : "none";
   },
   { immediate: true },
@@ -51,7 +23,7 @@ watch(
 
 onUnmounted(() => {
   window.clearTimeout(gemTimer);
-  stopHomeCountdown();
+  store.resetResultHomeCountdown();
 });
 
 const resultTasks = computed(() => ["看", "找", "搭", "说"]);
@@ -108,7 +80,7 @@ function openGemChest() {
   gemTimer = window.setTimeout(() => {
     rewardPopup.value = "none";
     gemFlying.value = false;
-    startHomeCountdown();
+    store.startResultHomeCountdown();
   }, 1500);
 }
 </script>
@@ -175,12 +147,6 @@ function openGemChest() {
           </div>
         </section>
 
-        <footer class="growth-card-actions">
-          <button class="cta-button" type="button" @click="goHome">
-            回首页
-            <span v-if="rewardCollected">（{{ homeCountdown }}S）</span>
-          </button>
-        </footer>
       </section>
 
       <aside class="growth-card-reward-panel compact-card-panel">

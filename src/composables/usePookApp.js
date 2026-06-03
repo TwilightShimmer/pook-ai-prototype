@@ -87,6 +87,8 @@ export function createPookAppStore() {
   const lessonStarCount = ref(0);
   const lessonXpCount = ref(0);
   const pendingStepReward = ref(null);
+  const resultRewardCollected = ref(false);
+  const resultHomeCountdown = ref(15);
   const lessonCueOverrides = ref({});
   const exitLessonConfirm = ref(false);
   const currentCompletionReward = ref({
@@ -140,6 +142,36 @@ export function createPookAppStore() {
   const stepRewardXp = 10;
   let stepRewardTimer = 0;
   let stepRewardAutoTimer = 0;
+  let resultHomeCountdownTimer = 0;
+
+  function stopResultHomeCountdown() {
+    window.clearInterval(resultHomeCountdownTimer);
+    resultHomeCountdownTimer = 0;
+  }
+
+  function resetResultHomeCountdown() {
+    stopResultHomeCountdown();
+    resultRewardCollected.value = false;
+    resultHomeCountdown.value = 15;
+  }
+
+  function goHomeFromResult() {
+    resetResultHomeCountdown();
+    navigateTo("home");
+  }
+
+  function startResultHomeCountdown() {
+    stopResultHomeCountdown();
+    resultRewardCollected.value = true;
+    resultHomeCountdown.value = 15;
+
+    resultHomeCountdownTimer = window.setInterval(() => {
+      resultHomeCountdown.value -= 1;
+      if (resultHomeCountdown.value <= 0) {
+        goHomeFromResult();
+      }
+    }, 1000);
+  }
 
   function startLessonSession() {
     lessonRunId.value += 1;
@@ -533,8 +565,8 @@ export function createPookAppStore() {
       show: showJourneyNav,
       showBack: !atFirstFlow,
       showPrev: inLinearFlow.value && !atFirstFlow,
-      showNext: inLinearFlow.value && !atResult,
-      nextDisabled: !canAdvanceCurrent.value,
+      showNext: inLinearFlow.value,
+      nextDisabled: atResult ? false : !canAdvanceCurrent.value,
     };
   });
 
@@ -613,6 +645,7 @@ export function createPookAppStore() {
   function dispose() {
     window.clearTimeout(stepRewardTimer);
     window.clearTimeout(stepRewardAutoTimer);
+    stopResultHomeCountdown();
     ui.dispose();
   }
 
@@ -637,6 +670,8 @@ export function createPookAppStore() {
     lessonStarCount,
     lessonTotalStars,
     lessonTotalXp,
+    resultRewardCollected,
+    resultHomeCountdown,
     nextActionLabel,
     dockClassScreens,
     isImmersive,
@@ -670,6 +705,9 @@ export function createPookAppStore() {
     isReturningStudent: course.isReturningStudent,
     selectedAge: course.selectedAge,
     navigateTo,
+    goHomeFromResult,
+    resetResultHomeCountdown,
+    startResultHomeCountdown,
     requestTopBack,
     cancelExitLesson,
     confirmExitLesson,
