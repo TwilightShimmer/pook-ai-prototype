@@ -290,21 +290,6 @@ button {
     linear-gradient(145deg, #fff8eb 0%, #ffe4bd 52%, #ffd5ad 100%);
 }
 
-.pook-app.theme-warm::after {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  content: "";
-  background:
-    linear-gradient(90deg, rgba(81, 215, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(81, 215, 255, 0.08) 1px, transparent 1px),
-    radial-gradient(circle at 80% 22%, rgba(81, 215, 255, 0.16), transparent 18%);
-  background-size: 74px 74px, 74px 74px, 100% 100%;
-  mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 78%, transparent 100%);
-  opacity: 0.72;
-}
-
 .pook-app.theme-cold {
   --bg: #071223;
   --bg-2: #12356a;
@@ -391,17 +376,18 @@ button {
 .pook-app.theme-warm .growth-book {
   color: #452b18;
   background:
-    linear-gradient(120deg, transparent 0%, rgba(81, 215, 255, 0.16) 44%, transparent 58%) -140% 0 / 54% 100% no-repeat,
+    linear-gradient(90deg, rgba(81, 215, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(81, 215, 255, 0.07) 1px, transparent 1px),
     radial-gradient(circle at 80% 10%, rgba(81, 215, 255, 0.18), transparent 30%),
     radial-gradient(circle at 18% 86%, rgba(255, 222, 138, 0.26), transparent 30%),
     rgba(255, 250, 239, 0.74);
+  background-size: 72px 72px, 72px 72px, auto, auto, auto;
   border-color: rgba(81, 215, 255, 0.24);
   box-shadow:
     var(--shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.42),
     0 0 0 1px rgba(81, 215, 255, 0.08);
   backdrop-filter: blur(18px);
-  animation: warmPanelScan 5.8s ease-in-out infinite;
 }
 
 .pook-app.theme-warm .home-test-theme-tab,
@@ -454,38 +440,6 @@ button {
   justify-self: end;
   gap: clamp(0.65rem, 1.4cqw, 1rem);
   min-width: 0;
-}
-
-.poki-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  height: clamp(3.05rem, 5.6cqh, 3.65rem);
-  padding: 0 clamp(0.9rem, 1.5cqw, 1.2rem);
-  color: #eafaff;
-  background: rgba(6, 18, 37, 0.68);
-  border: 1px solid rgba(81, 215, 255, 0.3);
-  border-radius: 999px;
-  box-shadow: 0 12px 28px rgba(3, 17, 37, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(18px);
-  font-size: clamp(0.9rem, 1.25cqw, 1.05rem);
-  font-weight: 950;
-  white-space: nowrap;
-}
-
-.poki-status-pill i {
-  width: 0.78rem;
-  height: 0.78rem;
-  background: #51d7ff;
-  border-radius: 999px;
-  box-shadow: 0 0 0 0 rgba(81, 215, 255, 0.38), 0 0 1rem rgba(81, 215, 255, 0.8);
-  animation: pokiStatusPulse 1.35s ease-in-out infinite;
-}
-
-.pook-app.theme-warm .poki-status-pill {
-  color: #06334c;
-  background: rgba(235, 251, 255, 0.78);
-  border-color: rgba(81, 215, 255, 0.36);
 }
 
 .round-button {
@@ -2914,6 +2868,7 @@ button {
 .home-test-layout {
   position: relative;
   height: 100%;
+  padding-right: clamp(8.5rem, 14cqw, 12rem);
 }
 
 .home-test-bubble {
@@ -2974,7 +2929,7 @@ button {
   gap: 0;
   min-height: 0;
   height: 100%;
-  padding: 28px 220px 28px 30px;
+  padding: clamp(1.35rem, 2.4cqw, 2rem);
   background:
     radial-gradient(circle at 80% 16%, rgba(81, 215, 255, 0.16), transparent 18%),
     radial-gradient(circle at 18% 82%, rgba(255, 222, 114, 0.1), transparent 18%),
@@ -3003,52 +2958,23 @@ button {
 }
 
 .home-test-main::after {
-  background:
-    linear-gradient(90deg, transparent, rgba(81, 215, 255, 0.22), transparent) 0 16% / 100% 1px no-repeat,
-    linear-gradient(180deg, transparent, rgba(81, 215, 255, 0.18), transparent) 18% 0 / 1px 100% no-repeat;
-  opacity: 0.72;
-  animation: homeHudScan 4.8s ease-in-out infinite;
-}
-
-.home-hud-strip {
-  position: absolute;
-  top: 1.4rem;
-  right: 2rem;
-  left: 2rem;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  pointer-events: none;
-  color: rgba(6, 51, 76, 0.62);
-  font-size: clamp(0.72rem, 1cqw, 0.88rem);
-  font-weight: 1000;
-  letter-spacing: 0.08em;
-}
-
-.home-hud-strip b,
-.home-hud-strip i {
-  padding: 0.35rem 0.65rem;
-  background: rgba(235, 251, 255, 0.55);
-  border: 1px solid rgba(81, 215, 255, 0.22);
-  border-radius: 999px;
-  font-style: normal;
+  display: none;
 }
 
 .home-test-course-stage {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 188px minmax(0, 1fr);
-  gap: 24px;
+  grid-template-columns: clamp(7.4rem, 12cqw, 10rem) minmax(0, 1fr);
+  gap: clamp(1rem, 2cqw, 1.5rem);
   align-items: center;
   min-height: 0;
-  height: min(620px, 100%);
+  height: 100%;
 }
 
 .home-test-theme-rail {
   display: grid;
-  gap: 16px;
+  gap: clamp(0.65rem, 1.4cqh, 1rem);
   align-content: center;
   padding-top: 0;
 }
@@ -3057,9 +2983,9 @@ button {
   display: grid;
   justify-items: center;
   gap: 10px;
-  width: 122px;
-  min-height: 138px;
-  padding: 14px 10px 12px;
+  width: clamp(6.4rem, 10cqw, 7.6rem);
+  min-height: clamp(7.2rem, 15cqh, 8.6rem);
+  padding: clamp(0.65rem, 1.4cqh, 0.9rem) 0.6rem;
   color: #fff;
   background: linear-gradient(180deg, rgba(34, 43, 90, 0.92), rgba(13, 18, 39, 0.94));
   border: 2px solid rgba(255, 255, 255, 0.12);
@@ -3069,7 +2995,7 @@ button {
 }
 
 .home-test-theme-tab.active {
-  transform: translateX(12px) scale(1.03);
+  transform: translateX(0.55rem) scale(1.02);
   border-color: rgba(81, 215, 255, 0.54);
   box-shadow: 0 18px 34px rgba(23, 182, 255, 0.22);
 }
@@ -3077,10 +3003,10 @@ button {
 .home-test-theme-art {
   display: grid;
   place-items: center;
-  width: 84px;
-  height: 84px;
+  width: clamp(4.2rem, 7cqw, 5.25rem);
+  height: clamp(4.2rem, 7cqw, 5.25rem);
   border-radius: 26px;
-  font-size: 42px;
+  font-size: clamp(2rem, 3.4cqw, 2.6rem);
   line-height: 1;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 10px 18px rgba(0, 0, 0, 0.22);
 }
@@ -3141,8 +3067,8 @@ button {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: center;
-  min-height: min(500px, 100%);
-  padding: 48px 22px;
+  min-height: min(28rem, 100%);
+  padding: clamp(2rem, 5cqh, 3rem) clamp(1rem, 2cqw, 1.4rem);
   background:
     radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.08), transparent 20%),
     radial-gradient(circle at 88% 24%, rgba(81, 215, 255, 0.12), transparent 18%),
@@ -3181,30 +3107,11 @@ button {
 }
 
 .home-test-lesson-node.featured::before {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  width: clamp(9.8rem, 13cqw, 12.5rem);
-  aspect-ratio: 1;
-  content: "";
-  z-index: -1;
-  border: 2px solid rgba(81, 215, 255, 0.36);
-  border-radius: 999px;
-  box-shadow: 0 0 2rem rgba(81, 215, 255, 0.18), inset 0 0 2rem rgba(81, 215, 255, 0.08);
-  transform: translate(-50%, -50%);
-  animation: lessonEnergyRing 4.2s linear infinite;
+  display: none;
 }
 
 .home-test-lesson-node.featured::after {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  width: clamp(8.2rem, 11cqw, 10.2rem);
-  aspect-ratio: 1;
-  content: "";
-  z-index: -1;
-  border: 1px dashed rgba(81, 215, 255, 0.42);
-  border-radius: 999px;
-  transform: translate(-50%, -50%);
-  animation: lessonEnergyRing 6.4s linear infinite reverse;
+  display: none;
 }
 
 .home-test-lesson-node.node-1 { transform: translateY(-26px); }
@@ -3219,8 +3126,8 @@ button {
   overflow: hidden;
   display: grid;
   place-items: center;
-  width: 120px;
-  height: 120px;
+  width: clamp(5.6rem, 8.8cqw, 7.5rem);
+  height: clamp(5.6rem, 8.8cqw, 7.5rem);
   padding: 0;
   background: linear-gradient(145deg, #203c86, #101834);
   border: 4px solid rgba(81, 215, 255, 0.5);
@@ -3229,28 +3136,7 @@ button {
 }
 
 .home-test-node-core::after {
-  position: absolute;
-  inset: -30% auto -30% -65%;
-  width: 42%;
-  content: "";
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.58), transparent);
-  transform: skewX(-18deg);
-  animation: nodeLightSweep 4.8s ease-in-out infinite;
-}
-
-.home-test-node-status {
-  position: absolute;
-  top: 0.55rem;
-  right: 0.55rem;
-  z-index: 1;
-  padding: 0.32rem 0.55rem;
-  color: #06334c;
-  background: rgba(235, 251, 255, 0.88);
-  border: 1px solid rgba(81, 215, 255, 0.4);
-  border-radius: 999px;
-  box-shadow: 0 0 1.2rem rgba(81, 215, 255, 0.2);
-  font-size: 0.75rem;
-  font-weight: 1000;
+  display: none;
 }
 
 .home-test-lesson-node.locked .home-test-node-core {
@@ -3335,7 +3221,7 @@ button {
 .home-test-bubble-cluster {
   position: absolute;
   top: 50%;
-  right: 18px;
+  right: 0.4rem;
   z-index: 4;
   display: flex;
   align-items: center;
@@ -3345,7 +3231,7 @@ button {
 
 .home-test-floating-rail {
   display: grid;
-  gap: 16px;
+  gap: clamp(0.7rem, 1.5cqh, 1rem);
   justify-items: center;
 }
 
@@ -3376,14 +3262,15 @@ button {
 .home-test-activity-drawer {
   position: absolute;
   top: 50%;
-  right: 166px;
+  right: clamp(4.8rem, 8cqw, 6.2rem);
   z-index: 3;
   display: grid;
   align-content: center;
-  gap: 12px;
-  width: min(370px, calc(100% - 340px));
-  min-height: min(440px, calc(100% - 56px));
-  padding: 30px;
+  gap: clamp(0.55rem, 1.2cqh, 0.85rem);
+  width: clamp(14rem, 21cqw, 18rem);
+  max-height: calc(100% - 2rem);
+  min-height: 0;
+  padding: clamp(1rem, 2cqw, 1.35rem);
   color: #fff;
   background:
     radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.18), transparent 26%),
@@ -3419,12 +3306,12 @@ button {
 .home-test-activity-emoji {
   display: grid;
   place-items: center;
-  width: 92px;
-  height: 92px;
+  width: clamp(4.2rem, 7cqw, 5.4rem);
+  height: clamp(4.2rem, 7cqw, 5.4rem);
   color: #07101f;
   background: linear-gradient(135deg, #ffde72, #51d7ff);
   border-radius: 30px;
-  font-size: 56px;
+  font-size: clamp(2.2rem, 4cqw, 3.2rem);
   line-height: 1;
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.24);
 }
@@ -3446,13 +3333,13 @@ button {
 }
 
 .home-test-activity-drawer h2 {
-  font-size: clamp(28px, 3vw, 38px);
+  font-size: clamp(1.45rem, 2.3cqw, 2rem);
   line-height: 1.08;
 }
 
 .home-test-activity-drawer > strong {
   color: rgba(255, 255, 255, 0.78);
-  font-size: 20px;
+  font-size: clamp(0.95rem, 1.25cqw, 1.12rem);
   line-height: 1.42;
 }
 
@@ -3463,11 +3350,11 @@ button {
 }
 
 .home-test-activity-list span {
-  padding: 12px 14px;
+  padding: 0.65rem 0.75rem;
   color: #07101f;
   background: rgba(255, 255, 255, 0.88);
   border-radius: 18px;
-  font-size: 17px;
+  font-size: clamp(0.85rem, 1.1cqw, 1rem);
   font-weight: 950;
 }
 
@@ -3479,61 +3366,6 @@ button {
   to {
     opacity: 1;
     transform: translate(0, -50%) scale(1);
-  }
-}
-
-@keyframes warmPanelScan {
-  0%,
-  58% {
-    background-position: -140% 0, 0 0, 0 0, 0 0;
-  }
-  100% {
-    background-position: 220% 0, 0 0, 0 0, 0 0;
-  }
-}
-
-@keyframes homeHudScan {
-  0%,
-  100% {
-    opacity: 0.46;
-    transform: translateY(-4px);
-  }
-  48% {
-    opacity: 0.9;
-    transform: translateY(12px);
-  }
-}
-
-@keyframes lessonEnergyRing {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg) scale(0.98);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg) scale(1.02);
-  }
-}
-
-@keyframes nodeLightSweep {
-  0%,
-  62% {
-    left: -65%;
-    opacity: 0;
-  }
-  76% {
-    opacity: 1;
-  }
-  100% {
-    left: 125%;
-    opacity: 0;
-  }
-}
-
-@keyframes pokiStatusPulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(81, 215, 255, 0.38), 0 0 1rem rgba(81, 215, 255, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 0 0.55rem rgba(81, 215, 255, 0), 0 0 1.25rem rgba(81, 215, 255, 0.9);
   }
 }
 

@@ -18,10 +18,6 @@ const store = usePookAppStore();
       <span>{{ store.currentScreenMeta.value.title }}</span>
     </div>
     <div class="topbar-actions">
-      <div class="poki-status-pill" aria-label="POKI 状态">
-        <i aria-hidden="true"></i>
-        <span>POKI 在线</span>
-      </div>
       <button class="team-wallet" type="button" aria-label="切换当前小队" @click="store.openTeamSwitchGate()">
         <span>{{ store.currentTeam.value.number }}号</span>
         <strong>{{ store.currentTeam.value.name }}</strong>
