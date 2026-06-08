@@ -3,6 +3,7 @@ export const screens = [
   { id: "home", title: "POOK 玩学首页" },
   { id: "shop", title: "套件商城" },
   { id: "course", title: "探索更多课程" },
+  { id: "class-size", title: "选择上课人数" },
   { id: "meet", title: "见面" },
   { id: "goals", title: "本节课目标" },
   { id: "welcome", title: "课前介绍" },

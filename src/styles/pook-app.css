@@ -261,9 +261,9 @@ button {
   --app-pad-x: clamp(1.25rem, 3.2cqw, 2.875rem);
   --app-pad-top: clamp(1rem, 3cqh, 1.75rem);
   --app-pad-bottom: clamp(1rem, 3cqh, 2.125rem);
-  --chrome-space: clamp(5.5rem, 12cqh, 7.25rem);
-  --bottom-space: clamp(5.5rem, 12cqh, 7.5rem);
-  --content-gap: clamp(0.75rem, 2cqh, 1.25rem);
+  --chrome-space: clamp(5.8rem, 11cqh, 7rem);
+  --bottom-space: clamp(5.7rem, 10.5cqh, 6.8rem);
+  --content-gap: clamp(0.75rem, 1.8cqh, 1.1rem);
   --lesson-nav-height: clamp(7rem, 14cqh, 8rem);
   --lesson-nav-gap: clamp(1.8rem, 4cqh, 2.6rem);
   --lesson-nav-space: calc(var(--app-pad-bottom) + var(--lesson-nav-height) + var(--lesson-nav-gap));
@@ -332,9 +332,21 @@ button {
 }
 
 .pook-app.theme-warm .app-dock,
+.pook-app.theme-warm .app-chrome {
+  background:
+    linear-gradient(90deg, rgba(255, 242, 220, 0.74), rgba(235, 251, 255, 0.46), rgba(255, 242, 220, 0.74));
+  border-color: rgba(92, 137, 158, 0.24);
+}
+
 .pook-app.theme-warm .lesson-journey-nav {
   background: rgba(102, 58, 28, 0.72);
   border-color: rgba(255, 244, 222, 0.42);
+}
+
+.pook-app.theme-cold .app-chrome,
+.pook-app.theme-cold .app-dock {
+  background: rgba(6, 18, 37, 0.72);
+  border-color: rgba(124, 211, 255, 0.2);
 }
 
 .pook-app.theme-warm .title-plaque,
@@ -419,15 +431,20 @@ button {
 
 .app-chrome {
   position: absolute;
-  top: var(--app-pad-top);
-  right: var(--app-pad-x);
-  left: var(--app-pad-x);
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: 4;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  height: clamp(4.8rem, 10cqh, 5.4rem);
+  height: var(--chrome-space);
   min-width: 0;
+  padding: 0 var(--app-pad-x);
+  background: rgba(255, 248, 234, 0.58);
+  border-bottom: 2px solid rgba(92, 137, 158, 0.24);
+  box-shadow: 0 0.65rem 1.8rem rgba(92, 55, 24, 0.08);
+  backdrop-filter: blur(18px);
 }
 
 .app-chrome > .round-button {
@@ -534,14 +551,14 @@ button {
   width: clamp(15rem, 30cqw, 24rem);
   min-width: 0;
   max-width: 100%;
-  height: clamp(4.5rem, 8cqh, 5.375rem);
+  height: clamp(3.7rem, 6.7cqh, 4.5rem);
   place-items: center;
   padding: 0 clamp(1.2rem, 2.4cqw, 2rem);
   color: #f9edff;
   background: linear-gradient(180deg, rgba(28, 42, 89, 0.92), rgba(20, 21, 56, 0.92));
   border: 2px solid rgba(255, 255, 255, 0.13);
-  border-radius: 0 0 34px 34px;
-  box-shadow: inset 0 -8px 18px rgba(255, 255, 255, 0.08), 0 14px 0 rgba(22, 13, 44, 0.62);
+  border-radius: 999px;
+  box-shadow: inset 0 -8px 18px rgba(255, 255, 255, 0.08), 0 0.8rem 1.8rem rgba(22, 13, 44, 0.16);
   font-size: clamp(1.7rem, 3.2cqw, 2.375rem);
   font-weight: 900;
   letter-spacing: 0;
@@ -557,18 +574,24 @@ button {
 .app-dock {
   position: absolute;
   left: 50%;
-  bottom: var(--app-pad-bottom);
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 8;
   display: flex;
-  max-width: calc(100% - var(--app-pad-x) * 2);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--bottom-space);
+  max-width: none;
   gap: 10px;
-  padding: 10px 12px;
-  background: rgba(7, 11, 24, 0.62);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
+  padding: 0 var(--app-pad-x);
+  background: rgba(255, 248, 234, 0.58);
+  border-top: 2px solid rgba(92, 137, 158, 0.24);
+  border-radius: 0;
+  box-shadow: 0 -0.65rem 1.8rem rgba(92, 55, 24, 0.08);
   backdrop-filter: blur(20px);
-  transform: translateX(-50%);
+  transform: none;
 }
 
 .lesson-debug-jump {
@@ -702,7 +725,7 @@ button {
 
 .screen {
   position: absolute;
-  top: calc(var(--app-pad-top) + var(--chrome-space) + var(--content-gap));
+  top: calc(var(--chrome-space) + var(--content-gap));
   right: var(--app-pad-x);
   bottom: var(--bottom-space);
   left: var(--app-pad-x);
@@ -2868,15 +2891,15 @@ button {
 .home-test-layout {
   position: relative;
   height: 100%;
-  padding-right: clamp(8.5rem, 14cqw, 12rem);
+  min-height: 0;
 }
 
 .home-test-bubble {
   display: grid;
   place-items: center;
   gap: 4px;
-  width: 118px;
-  height: 118px;
+  width: clamp(5.1rem, 8cqw, 6.4rem);
+  height: clamp(5.1rem, 8cqw, 6.4rem);
   color: #fff;
   border: 0;
   border-radius: 50%;
@@ -2905,13 +2928,13 @@ button {
 }
 
 .home-test-bubble strong {
-  font-size: 40px;
+  font-size: clamp(1.95rem, 3.2cqw, 2.35rem);
   line-height: 1;
 }
 
 .home-test-bubble small {
   color: rgba(255, 255, 255, 0.86);
-  font-size: 17px;
+  font-size: clamp(0.78rem, 1.15cqw, 0.95rem);
   font-weight: 900;
 }
 
@@ -2925,17 +2948,18 @@ button {
 .home-test-main {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(6.8rem, 10cqw, 8.2rem);
   align-items: center;
-  gap: 0;
+  gap: clamp(1rem, 2cqw, 1.35rem);
   min-height: 0;
   height: 100%;
-  padding: clamp(1.35rem, 2.4cqw, 2rem);
+  padding: clamp(1.2rem, 2.2cqw, 1.75rem);
   background:
     radial-gradient(circle at 80% 16%, rgba(81, 215, 255, 0.16), transparent 18%),
     radial-gradient(circle at 18% 82%, rgba(255, 222, 114, 0.1), transparent 18%),
     linear-gradient(160deg, rgba(20, 32, 73, 0.92), rgba(12, 18, 42, 0.96));
   border: 2px solid rgba(255, 255, 255, 0.14);
-  border-radius: 34px;
+  border-radius: 24px;
   box-shadow: var(--shadow);
   overflow: hidden;
 }
@@ -2943,11 +2967,11 @@ button {
 .home-test-main::before,
 .home-test-main::after {
   position: absolute;
-  inset: 1.2rem;
+  inset: 1rem;
   z-index: 0;
   pointer-events: none;
   content: "";
-  border-radius: 1.45rem;
+  border-radius: 1.1rem;
 }
 
 .home-test-main::before {
@@ -2970,6 +2994,7 @@ button {
   align-items: center;
   min-height: 0;
   height: 100%;
+  min-width: 0;
 }
 
 .home-test-theme-rail {
@@ -3219,14 +3244,13 @@ button {
 }
 
 .home-test-bubble-cluster {
-  position: absolute;
-  top: 50%;
-  right: 0.4rem;
-  z-index: 4;
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
-  gap: 14px;
-  transform: translateY(-50%);
+  justify-content: center;
+  gap: clamp(0.45rem, 1cqw, 0.7rem);
+  min-width: 0;
 }
 
 .home-test-floating-rail {
@@ -3248,13 +3272,13 @@ button {
 .home-test-bubble-toggle {
   display: grid;
   place-items: center;
-  width: 58px;
-  height: 58px;
+  width: clamp(2.4rem, 4.2cqw, 3.2rem);
+  height: clamp(2.4rem, 4.2cqw, 3.2rem);
   color: #07101f;
   background: #ffde72;
   border: 0;
   border-radius: 999px;
-  font-size: 28px;
+  font-size: clamp(1.25rem, 2.2cqw, 1.6rem);
   font-weight: 950;
   box-shadow: 0 16px 28px rgba(0, 0, 0, 0.24);
 }
@@ -3262,7 +3286,7 @@ button {
 .home-test-activity-drawer {
   position: absolute;
   top: 50%;
-  right: clamp(4.8rem, 8cqw, 6.2rem);
+  right: clamp(7.8rem, 11cqw, 9.2rem);
   z-index: 3;
   display: grid;
   align-content: center;
@@ -4362,6 +4386,186 @@ button {
   color: #07101f;
   background: linear-gradient(145deg, #51d7ff, #45e0a8);
   border-color: rgba(255, 255, 255, 0.4);
+}
+
+.class-size-page {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+  gap: clamp(20px, 2.2vw, 34px);
+}
+
+.class-size-main-panel {
+  align-content: center;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 16%, rgba(255, 215, 122, 0.42), transparent 30%),
+    radial-gradient(circle at 86% 12%, rgba(95, 228, 255, 0.24), transparent 32%),
+    rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow: 0 22px 56px rgba(166, 104, 45, 0.16);
+}
+
+.class-size-kicker {
+  width: max-content;
+  max-width: 100%;
+  padding: 10px 16px;
+  color: #6f3d17;
+  background: rgba(255, 238, 198, 0.82);
+  border: 1px solid rgba(255, 191, 96, 0.42);
+  border-radius: 999px;
+  font-size: clamp(16px, 1.7vw, 23px);
+  font-weight: 900;
+}
+
+.class-size-main-panel h2 {
+  max-width: 720px;
+  margin: 0;
+  color: #2f251b;
+  font-size: clamp(34px, 4.8vw, 64px);
+  line-height: 1.05;
+}
+
+.class-size-main-panel p {
+  max-width: 760px;
+  color: rgba(66, 44, 24, 0.72);
+  font-size: clamp(18px, 2.1vw, 27px);
+  line-height: 1.45;
+}
+
+.class-size-card-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 18px);
+}
+
+.class-size-card-grid .size-option {
+  position: relative;
+  min-height: clamp(150px, 19vh, 210px);
+  padding: 18px 10px 16px;
+  overflow: hidden;
+  color: #3a2a1b;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 234, 197, 0.78)),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.8), transparent 56%);
+  border: 2px solid rgba(255, 180, 81, 0.34);
+  border-radius: 26px;
+  box-shadow: 0 16px 30px rgba(126, 78, 34, 0.14);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.class-size-card-grid .size-option:hover,
+.class-size-card-grid .size-option.active {
+  transform: translateY(-8px);
+  border-color: rgba(55, 203, 255, 0.88);
+  box-shadow: 0 22px 42px rgba(60, 165, 207, 0.2);
+}
+
+.class-size-card-grid .size-option.active {
+  background:
+    linear-gradient(145deg, rgba(83, 218, 255, 0.94), rgba(255, 226, 120, 0.92)),
+    rgba(255, 255, 255, 0.9);
+}
+
+.class-size-card-grid .size-option strong {
+  font-size: clamp(44px, 5vw, 70px);
+  line-height: 0.9;
+}
+
+.class-size-card-grid .size-option span {
+  color: rgba(61, 42, 26, 0.68);
+  font-size: clamp(15px, 1.4vw, 20px);
+  font-weight: 900;
+}
+
+.class-size-card-grid .size-option small {
+  color: rgba(61, 42, 26, 0.7);
+  font-size: clamp(14px, 1.3vw, 18px);
+  font-weight: 900;
+}
+
+.size-child-row {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  min-height: 38px;
+}
+
+.size-child-row i {
+  font-size: clamp(22px, 2.3vw, 34px);
+  font-style: normal;
+  filter: drop-shadow(0 6px 8px rgba(108, 70, 28, 0.15));
+}
+
+.class-size-confirm {
+  justify-self: start;
+  min-width: min(100%, 260px);
+}
+
+.class-size-side-panel {
+  display: grid;
+  align-content: center;
+  gap: 24px;
+  min-height: 0;
+  padding: 34px 28px;
+  color: #2d251d;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 231, 187, 0.72)),
+    rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 34px;
+  box-shadow: 0 20px 48px rgba(126, 78, 34, 0.14);
+}
+
+.class-size-poki {
+  display: grid;
+  place-items: center;
+  width: clamp(92px, 10vw, 132px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  background: radial-gradient(circle at 42% 26%, #ffffff, #dff6ff 56%, #ffd88d);
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-radius: 34px;
+  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.36), 0 16px 34px rgba(65, 121, 154, 0.18);
+  font-size: clamp(48px, 5.8vw, 78px);
+}
+
+.class-size-strategy-copy {
+  display: grid;
+  gap: 12px;
+}
+
+.class-size-strategy-copy strong {
+  color: #332519;
+  font-size: clamp(24px, 2.5vw, 34px);
+  line-height: 1.14;
+}
+
+.class-size-strategy-copy p {
+  margin: 0;
+  color: rgba(63, 43, 24, 0.72);
+  font-size: clamp(16px, 1.45vw, 20px);
+  line-height: 1.5;
+}
+
+.class-size-role-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.class-size-role-list span {
+  padding: 8px 12px;
+  color: #594026;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(255, 177, 72, 0.3);
+  border-radius: 999px;
+  font-size: clamp(14px, 1.2vw, 17px);
+  font-weight: 900;
 }
 
 .task-cue-card,

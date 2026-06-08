@@ -144,49 +144,49 @@ function lessonEmoji(lesson) {
             </div>
           </div>
         </div>
-      </section>
 
-      <div class="home-test-bubble-cluster" :class="{ collapsed: bubblesCollapsed }">
-        <div class="home-test-floating-rail">
-          <button
-            v-for="(item, index) in floatingBubbles"
-            :key="item.id"
-            class="home-test-bubble"
-            :class="[item.tone, { active: activeActivityId === item.id }]"
-            :style="bubbleAnimationStyle(index)"
-            @click="openActivity(item)"
-          >
-            <strong aria-hidden="true">{{ item.emoji }}</strong>
-            <small>{{ item.label }}</small>
+        <div class="home-test-bubble-cluster" :class="{ collapsed: bubblesCollapsed }">
+          <div class="home-test-floating-rail">
+            <button
+              v-for="(item, index) in floatingBubbles"
+              :key="item.id"
+              class="home-test-bubble"
+              :class="[item.tone, { active: activeActivityId === item.id }]"
+              :style="bubbleAnimationStyle(index)"
+              @click="openActivity(item)"
+            >
+              <strong aria-hidden="true">{{ item.emoji }}</strong>
+              <small>{{ item.label }}</small>
+            </button>
+          </div>
+          <button class="home-test-bubble-toggle" @click="toggleBubbles">
+            {{ bubblesCollapsed ? "《" : "》" }}
           </button>
         </div>
-        <button class="home-test-bubble-toggle" @click="toggleBubbles">
-          {{ bubblesCollapsed ? "《" : "》" }}
-        </button>
-      </div>
 
-      <aside
-        v-if="activeActivity"
-        class="home-test-activity-drawer"
-        :class="activeActivity.tone"
-        aria-live="polite"
-      >
-        <button
-          class="home-test-activity-close"
-          type="button"
-          aria-label="关闭活动面板"
-          @click="activeActivityId = null"
+        <aside
+          v-if="activeActivity"
+          class="home-test-activity-drawer"
+          :class="activeActivity.tone"
+          aria-live="polite"
         >
-          ×
-        </button>
-        <span class="home-test-activity-emoji" aria-hidden="true">{{ activeActivity.emoji }}</span>
-        <p>{{ activeActivity.label }}</p>
-        <h2>{{ activeActivity.title }}</h2>
-        <strong>{{ activeActivity.summary }}</strong>
-        <div class="home-test-activity-list">
-          <span v-for="item in activeActivity.bullets" :key="item">{{ item }}</span>
-        </div>
-      </aside>
+          <button
+            class="home-test-activity-close"
+            type="button"
+            aria-label="关闭活动面板"
+            @click="activeActivityId = null"
+          >
+            ×
+          </button>
+          <span class="home-test-activity-emoji" aria-hidden="true">{{ activeActivity.emoji }}</span>
+          <p>{{ activeActivity.label }}</p>
+          <h2>{{ activeActivity.title }}</h2>
+          <strong>{{ activeActivity.summary }}</strong>
+          <div class="home-test-activity-list">
+            <span v-for="item in activeActivity.bullets" :key="item">{{ item }}</span>
+          </div>
+        </aside>
+      </section>
     </div>
   </section>
 </template>

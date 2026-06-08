@@ -16,6 +16,7 @@ import TeamSwitchGateOverlay from "./TeamSwitchGateOverlay.vue";
 import UpdateAnnouncement from "./UpdateAnnouncement.vue";
 import BlocksScreen from "./screens/BlocksScreen.vue";
 import BuildScreen from "./screens/BuildScreen.vue";
+import ClassSizeScreen from "./screens/ClassSizeScreen.vue";
 import CourseScreen from "./screens/CourseScreen.vue";
 import FreeBuildScreen from "./screens/FreeBuildScreen.vue";
 import GoalsScreen from "./screens/GoalsScreen.vue";
@@ -81,6 +82,7 @@ onBeforeUnmount(() => {
       <HomeTestScreen />
       <ShopScreen />
       <CourseScreen />
+      <ClassSizeScreen />
       <MeetScreen />
       <WelcomeScreen />
       <GoalsScreen />

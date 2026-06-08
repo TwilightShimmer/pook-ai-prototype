@@ -66,7 +66,7 @@ export function createPookCourseController({ navigateTo, showToast, startLesson 
       title: lesson.label,
     };
     startLesson();
-    navigateTo("meet");
+    navigateTo("class-size");
   }
 
   function selectCourseOption(index) {
@@ -85,7 +85,7 @@ export function createPookCourseController({ navigateTo, showToast, startLesson 
         title: lesson.label,
       };
       startLesson();
-      navigateTo("meet");
+      navigateTo("class-size");
       return;
     }
 
