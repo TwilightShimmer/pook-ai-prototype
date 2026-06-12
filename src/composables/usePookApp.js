@@ -16,6 +16,7 @@ import { createPookLessonFlow } from "./pook/usePookLessonFlow";
 import { createPookUiControllers } from "./pook/usePookUi";
 
 const pookAppStoreKey = Symbol("pook-app-store");
+const prototypeDemoMode = true;
 
 export function createPookAppStore(options = {}) {
   const currentScreen = ref("team-select");
@@ -139,7 +140,7 @@ export function createPookAppStore(options = {}) {
     set: (value) => updateCurrentTeam({ collectedLessonCards: Array.isArray(value) ? value : [] }),
   });
 
-  const ui = createPookUiControllers({ gemBalance });
+  const ui = createPookUiControllers({ gemBalance, prototypeDemoMode });
   const lessonFlow = createPookLessonFlow({ showToast: ui.showToast });
   const rewardableFlow = linearFlow.filter((screenId) => !["course", "result"].includes(screenId));
   const stepRewardXp = 10;
@@ -170,8 +171,9 @@ export function createPookAppStore(options = {}) {
     window.clearTimeout(updateAnnouncementTimer);
     window.clearTimeout(updateAnnouncementEnableTimer);
     updateAnnouncementSeen.value = true;
-    updateAnnouncementClosable.value = false;
+    updateAnnouncementClosable.value = prototypeDemoMode;
     updateAnnouncementVisible.value = true;
+    if (prototypeDemoMode) return;
     updateAnnouncementEnableTimer = window.setTimeout(() => {
       updateAnnouncementClosable.value = true;
     }, 5000);

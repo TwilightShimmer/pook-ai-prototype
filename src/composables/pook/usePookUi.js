@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 import { cues, rewardGemAmount } from "../../data/pookData";
 
-export function createPookUiControllers({ gemBalance }) {
+export function createPookUiControllers({ gemBalance, prototypeDemoMode = false }) {
   const taskCue = reactive({
     show: false,
     type: "任务开始",
@@ -61,6 +61,7 @@ export function createPookUiControllers({ gemBalance }) {
   }
 
   function showPageTransition(message = "POKI 正在带你过去") {
+    if (prototypeDemoMode) return;
     pageTransition.message = message;
     pageTransition.visible = true;
     taskCue.show = false;

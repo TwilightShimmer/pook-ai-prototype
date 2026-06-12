@@ -8,6 +8,7 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["enter-app"]);
+const prototypeDemoMode = true;
 
 const activePanel = ref("choice");
 const currentStage = ref(props.startAtLogin ? "login" : "opening");
@@ -48,6 +49,10 @@ function submitAccountLogin() {
   if (loginPending.value) return;
   loginPending.value = true;
   clearLoginTimer();
+  if (prototypeDemoMode) {
+    enterApp();
+    return;
+  }
   currentStage.value = "loadingIntro";
   loginTimer = window.setTimeout(() => {
     currentStage.value = "loading";
