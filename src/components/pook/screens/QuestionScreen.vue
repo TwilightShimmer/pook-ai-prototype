@@ -3,11 +3,13 @@ import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { usePookAppStore } from "../../../composables/usePookApp";
 import { useStepFeedback } from "../../../composables/useStepFeedback";
 import FeedbackMessage from "../shared/FeedbackMessage.vue";
+import PokiStatePanel from "../shared/PokiStatePanel.vue";
 
 const store = usePookAppStore();
 const { feedback, showFeedback, clearFeedback, clearFeedbackAfter } = useStepFeedback();
 const wrongAnswerIndex = ref(null);
 const questionPhase = ref("look");
+const question2Phase = ref("observe");
 const hintIndex = ref(0);
 let hintTimer = 0;
 
@@ -19,6 +21,12 @@ const lesson = computed(() => store.currentLesson.value);
 const phaseOrder = ["look", "speak", "choose"];
 const phaseIndex = computed(() => phaseOrder.indexOf(questionPhase.value));
 const isActive = computed(() => ["question", "question2"].includes(store.currentScreen.value));
+const pokiState = computed(() => {
+  if (state.value.answered) return "success";
+  if (questionPhase.value === "look") return "guide";
+  if (questionPhase.value === "speak") return "listening";
+  return "waiting";
+});
 
 const speakHints = computed(() =>
   isQuestion2.value
@@ -112,11 +120,21 @@ function nextStep() {
   store.nextQuestionStep(flowKey.value);
 }
 
+function completeQuestion2() {
+  const result = store.answerQuestion(step.value.correct, "question2");
+  showFeedback(result);
+  if (result.type === "success" || state.value.completed) {
+    question2Phase.value = "complete";
+  }
+}
+
 watch(
-  isActive,
-  (active) => {
+  () => store.currentScreen.value,
+  (screen) => {
+    const active = ["question", "question2"].includes(screen);
     if (active) {
       setPhase("look");
+      question2Phase.value = "observe";
       wrongAnswerIndex.value = null;
       clearFeedback();
     } else {
@@ -133,7 +151,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="screen" :class="{ active: isActive }" :data-screen="store.currentScreen.value">
-    <div class="question-observe-shell">
+    <div v-if="!isQuestion2" class="question-observe-shell">
       <section class="question-observe-main">
         <div class="question-observe-head">
           <span class="beta-chip">{{ phaseCopy.tag }}</span>
@@ -180,13 +198,11 @@ onBeforeUnmount(() => {
         </div>
       </section>
 
-      <aside class="question-poki-panel">
-        <div class="question-poki-avatar">🤖</div>
-        <div class="question-poki-bubble">
-          <span>POKI 说</span>
-          <strong>{{ phaseCopy.speech }}</strong>
-        </div>
-
+      <PokiStatePanel
+        :state="pokiState"
+        :message="phaseCopy.speech"
+        :detail="isQuestion2 ? '说作品、用途或小犀牛都可以。' : '可以说颜色、身体、角角或脏脏的。'"
+      >
         <div class="question-mini-hints">
           <span>{{ isQuestion2 ? "可以这样说作品" : "可以这样说" }}</span>
           <b v-for="hint in speakHints" :key="hint" :class="{ active: questionPhase === 'speak' && hint === speakHints[hintIndex] }">
@@ -205,7 +221,99 @@ onBeforeUnmount(() => {
         <button v-else-if="state.answered && !state.completed" class="cta-button question-action-button" type="button" @click="nextStep">
           继续
         </button>
-      </aside>
+        <button
+          v-if="questionPhase === 'speak'"
+          class="poki-secondary-action"
+          type="button"
+          @click="setPhase('choose')"
+        >
+          我不知道
+        </button>
+      </PokiStatePanel>
+    </div>
+
+    <div v-else class="question2-share-shell">
+      <section class="question2-work-panel">
+        <div class="question-observe-head">
+          <span class="beta-chip">问答2 · 作品分享</span>
+          <div>
+            <h2>把刚刚的作品介绍给 POKI</h2>
+            <p>展示固定作品，围绕作品直接说一说。</p>
+          </div>
+        </div>
+
+        <div class="question2-work-stage" :class="`phase-${question2Phase}`">
+          <img src="/resources/2.jpg" alt="小组刚刚完成的拼搭作品" />
+          <span class="question2-camera-corner corner-a"></span>
+          <span class="question2-camera-corner corner-b"></span>
+          <span class="question2-camera-corner corner-c"></span>
+          <span class="question2-camera-corner corner-d"></span>
+          <div class="question2-live-state">
+            <span>{{ question2Phase === "observe" ? "👀" : question2Phase === "speak" ? "🎤" : "✅" }}</span>
+            <strong>
+              {{ question2Phase === "observe"
+                ? "POKI 正在看作品"
+                : question2Phase === "speak"
+                  ? "POKI 正在听你介绍"
+                  : "POKI 听明白了" }}
+            </strong>
+          </div>
+        </div>
+
+        <div class="question2-share-queue">
+          <article :class="{ active: question2Phase === 'observe', done: question2Phase !== 'observe' }">
+            <b>👀</b>
+            <span><strong>展示作品</strong><small>让 POKI 看清楚</small></span>
+          </article>
+          <article :class="{ active: question2Phase === 'speak', done: question2Phase === 'complete' }">
+            <b>💬</b>
+            <span><strong>介绍作品</strong><small>它是什么？</small></span>
+          </article>
+          <article :class="{ active: question2Phase === 'complete' }">
+            <b>🦏</b>
+            <span><strong>说说用途</strong><small>它怎样帮助小犀牛？</small></span>
+          </article>
+        </div>
+      </section>
+
+      <PokiStatePanel
+        :state="question2Phase === 'complete' ? 'success' : question2Phase === 'speak' ? 'listening' : 'guide'"
+        :message="question2Phase === 'observe'
+          ? '请把刚刚拼好的作品放到画面里，让我先认真看一看。'
+          : question2Phase === 'speak'
+            ? '我在听！告诉我它是什么，又能怎样帮助小犀牛吧。'
+            : step.success"
+        detail="不需要选答案，像分享环节一样直接介绍作品。"
+      >
+        <div class="question2-speaking-prompts">
+          <span>可以这样说</span>
+          <b>这是一个……</b>
+          <b>它可以帮助小犀牛……</b>
+        </div>
+
+        <FeedbackMessage :feedback="feedback" />
+
+        <button
+          v-if="question2Phase === 'observe'"
+          class="cta-button question-action-button"
+          type="button"
+          @click="question2Phase = 'speak'"
+        >
+          作品放好了
+        </button>
+        <button
+          v-else-if="question2Phase === 'speak'"
+          class="cta-button question-action-button"
+          type="button"
+          @click="completeQuestion2"
+        >
+          我介绍完了
+        </button>
+        <div v-else class="question2-complete-note">
+          <span>🎉</span>
+          <strong>作品分享完成</strong>
+        </div>
+      </PokiStatePanel>
     </div>
   </section>
 </template>

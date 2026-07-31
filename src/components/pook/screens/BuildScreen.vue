@@ -51,7 +51,7 @@ function confirmStep() {
           <span>{{ step.roles[0] }}</span><span>{{ step.roles[1] }}</span><span>{{ step.roles[2] }}</span>
         </div>
       </section>
-      <AgentStage :text="step.aside" />
+      <AgentStage state="waiting" :text="step.aside" />
     </div>
   </section>
 </template>

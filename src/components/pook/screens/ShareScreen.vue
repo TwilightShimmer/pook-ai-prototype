@@ -49,7 +49,7 @@ function confirmStep() {
           {{ state.index === state.steps.length - 1 ? "全组分享完成" : "这一位说完了" }}
         </button>
       </section>
-      <AgentStage :text="step.aside" />
+      <AgentStage state="listening" :text="step.aside" />
     </div>
   </section>
 </template>

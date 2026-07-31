@@ -1,6 +1,7 @@
 <script setup>
 import { nextTick, ref } from "vue";
 import { usePookAppStore } from "../../../composables/usePookApp";
+import PokiCharacter from "../shared/PokiCharacter.vue";
 const store = usePookAppStore();
 const scienceStageRef = ref(null);
 const lastThemeSwitchAt = ref(0);
@@ -143,7 +144,7 @@ function handleScienceStageWheel(event) {
                   @click="store.selectCourseOption(index)"
                 >
                   <span v-if="option.latestUnlocked" class="home-test-node-guide">
-                    <span class="home-test-node-guide-emoji">🤖</span>
+                    <PokiCharacter class="home-test-node-guide-emoji" variant="avatar" decorative />
                     <span>跟 POKI 来</span>
                   </span>
                   <span class="home-test-node-level">{{ option.level }}</span>

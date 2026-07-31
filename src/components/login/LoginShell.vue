@@ -1,5 +1,6 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
+import PokiCharacter from "../pook/shared/PokiCharacter.vue";
 
 const props = defineProps({
   startAtLogin: {
@@ -13,6 +14,14 @@ const prototypeDemoMode = true;
 const activePanel = ref("choice");
 const currentStage = ref(props.startAtLogin ? "login" : "opening");
 const loginPending = ref(false);
+const loginAccount = ref("guest");
+const loginPassword = ref("123456");
+const loginError = ref("");
+const pendingIdentity = ref({
+  id: "guest",
+  displayName: "guest",
+  method: "account",
+});
 const openingVideoRef = ref(null);
 const loadingVideoRef = ref(null);
 
@@ -47,6 +56,17 @@ function playLoadingVideo() {
 
 function submitAccountLogin() {
   if (loginPending.value) return;
+  const account = loginAccount.value.trim();
+  if (!account || !loginPassword.value) {
+    loginError.value = "请输入账号和密码";
+    return;
+  }
+  loginError.value = "";
+  pendingIdentity.value = {
+    id: account,
+    displayName: account,
+    method: "account",
+  };
   loginPending.value = true;
   clearLoginTimer();
   if (prototypeDemoMode) {
@@ -60,12 +80,21 @@ function submitAccountLogin() {
   }, 1100);
 }
 
+function submitWechatLogin() {
+  pendingIdentity.value = {
+    id: "wechat-user",
+    displayName: "微信用户",
+    method: "wechat",
+  };
+  enterApp();
+}
+
 function enterApp() {
   clearLoginTimer();
   openingVideoRef.value?.pause();
   loadingVideoRef.value?.pause();
   loginPending.value = false;
-  emit("enter-app");
+  emit("enter-app", pendingIdentity.value);
 }
 
 function skipOpening() {
@@ -171,7 +200,7 @@ onBeforeUnmount(() => {
   >
     <div class="intro-glow" aria-hidden="true"></div>
     <div class="poki-guide">
-      <div class="poki-avatar" aria-hidden="true">🤖</div>
+      <PokiCharacter class="poki-avatar" variant="avatar" decorative />
       <div class="poki-speech">
         <p>我去准备今天的课堂啦！</p>
         <span>POKI 正在带你进入课堂</span>
@@ -221,12 +250,13 @@ onBeforeUnmount(() => {
         <form class="account-form" @submit.prevent="submitAccountLogin">
           <label class="field">
             <span>账号</span>
-            <input type="text" value="guest" />
+            <input v-model="loginAccount" type="text" autocomplete="username" />
           </label>
           <label class="field">
             <span>密码</span>
-            <input type="password" value="123456" />
+            <input v-model="loginPassword" type="password" autocomplete="current-password" />
           </label>
+          <p v-if="loginError" class="login-error">{{ loginError }}</p>
           <button class="primary-action" :disabled="loginPending" type="submit">登录</button>
         </form>
       </div>
@@ -245,6 +275,9 @@ onBeforeUnmount(() => {
           </div>
         </div>
         <p class="qr-caption">请打开微信进行扫码</p>
+        <button class="primary-action qr-demo-action" type="button" @click="submitWechatLogin">
+          模拟扫码成功
+        </button>
       </div>
     </div>
   </section>
@@ -625,6 +658,17 @@ h1 {
   border-radius: 14px;
   font-size: 16px;
   font-weight: 800;
+}
+
+.login-error {
+  margin: 0;
+  color: #ff9baf;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.qr-demo-action {
+  margin-top: 18px;
 }
 
 .qr-shell {

@@ -13,6 +13,7 @@ import RewardChestOverlay from "./RewardChestOverlay.vue";
 import TaskOverlay from "./TaskOverlay.vue";
 import TeacherGateOverlay from "./TeacherGateOverlay.vue";
 import TeamSwitchGateOverlay from "./TeamSwitchGateOverlay.vue";
+import TutorialGuide from "./TutorialGuide.vue";
 import UpdateAnnouncement from "./UpdateAnnouncement.vue";
 import BlocksScreen from "./screens/BlocksScreen.vue";
 import BuildScreen from "./screens/BuildScreen.vue";
@@ -33,9 +34,20 @@ import TeamSelectScreen from "./screens/TeamSelectScreen.vue";
 import WelcomeScreen from "./screens/WelcomeScreen.vue";
 
 const emit = defineEmits(["logout"]);
+const props = defineProps({
+  loginIdentity: {
+    type: Object,
+    default: () => ({
+      id: "guest",
+      displayName: "guest",
+      method: "account",
+    }),
+  },
+});
 
 const store = createPookAppStore({
   onLogout: () => emit("logout"),
+  loginIdentity: props.loginIdentity,
 });
 providePookAppStore(store);
 
@@ -106,6 +118,7 @@ onBeforeUnmount(() => {
       <TeamSwitchGateOverlay />
       <ExitLessonConfirm />
       <UpdateAnnouncement />
+      <TutorialGuide :visible="store.currentScreen.value === 'home'" />
     </main>
   </div>
 </template>

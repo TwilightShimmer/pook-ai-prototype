@@ -1,5 +1,6 @@
 <script setup>
 import { usePookAppStore } from "../../composables/usePookApp";
+import PokiCharacter from "./shared/PokiCharacter.vue";
 
 const store = usePookAppStore();
 </script>
@@ -7,7 +8,7 @@ const store = usePookAppStore();
 <template>
   <section v-if="store.exitLessonConfirm.value" class="exit-lesson-overlay" aria-live="polite">
     <div class="exit-lesson-card">
-      <span aria-hidden="true">🤖</span>
+      <PokiCharacter variant="avatar" decorative />
       <strong>要退出这节课吗？</strong>
       <p>退出后会回到首页，当前课堂流程会暂停。</p>
       <div>

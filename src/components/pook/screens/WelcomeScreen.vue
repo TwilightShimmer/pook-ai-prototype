@@ -1,6 +1,8 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { usePookAppStore } from "../../../composables/usePookApp";
+import PokiCharacter from "../shared/PokiCharacter.vue";
+import PokiStatePanel from "../shared/PokiStatePanel.vue";
 
 const store = usePookAppStore();
 const lesson = computed(() => store.currentLesson.value);
@@ -22,7 +24,7 @@ const introQuestion = computed(() =>
 const talkLines = computed(() => [
   {
     tag: "先记问题",
-    emoji: "🤖",
+    emoji: "👀",
     speech: `等下看视频时，帮 POKI 找一找：${introQuestion.value}`,
     detail: "先记住这个小问题，再开始看视频。",
   },
@@ -107,7 +109,7 @@ onBeforeUnmount(() => {
               preload="auto"
             ></video>
             <div v-if="!videoStarted" class="welcome-video-pause-mask">
-              <span>🤖</span>
+              <PokiCharacter variant="avatar" decorative />
               <strong>先听 POKI 的小问题</strong>
             </div>
             <div class="welcome-topic-overlay">
@@ -118,13 +120,12 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <aside class="welcome-poki-panel" aria-live="polite">
-          <div class="welcome-poki-avatar">🤖</div>
-          <div class="welcome-speech">
-            <span>{{ currentTalkLine.tag }}</span>
-            <strong>{{ currentTalkLine.speech }}</strong>
-          </div>
-
+        <PokiStatePanel
+          class="welcome-poki-panel"
+          :state="videoStarted ? 'observing' : 'speaking'"
+          :message="currentTalkLine.speech"
+          :detail="currentTalkLine.detail"
+        >
           <div class="welcome-info-stack">
             <article
               v-for="(item, index) in visibleTalkLines"
@@ -140,7 +141,7 @@ onBeforeUnmount(() => {
           <button class="cta-button welcome-start-button" type="button" @click="store.nextScreen">
             去回答问题
           </button>
-        </aside>
+        </PokiStatePanel>
       </section>
     </div>
   </section>

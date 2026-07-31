@@ -1,5 +1,6 @@
 <script setup>
 import { usePookAppStore } from "../../composables/usePookApp";
+import PokiCharacter from "./shared/PokiCharacter.vue";
 
 const store = usePookAppStore();
 </script>
@@ -7,7 +8,7 @@ const store = usePookAppStore();
 <template>
   <section v-if="store.teamSwitchGate.visible" class="teacher-gate-overlay team-gate-overlay" aria-live="polite">
     <div class="teacher-gate-card team-gate-card">
-      <span class="teacher-gate-robot" aria-hidden="true">🤖</span>
+      <PokiCharacter class="teacher-gate-robot" variant="avatar" decorative />
 
       <template v-if="store.teamSwitchGate.step === 'challenge'">
         <strong>老师小队验证</strong>

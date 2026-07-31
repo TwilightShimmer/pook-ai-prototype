@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { strategyCopy } from "../../../data/pookData";
 import { usePookAppStore } from "../../../composables/usePookApp";
+import PokiCharacter from "../shared/PokiCharacter.vue";
 
 const sizeLabels = {
   1: "POKI 陪我闯关",
@@ -25,7 +26,10 @@ const sizeCards = computed(() =>
   <section class="screen" :class="{ active: store.currentScreen.value === 'class-size' }" data-screen="class-size">
     <div class="class-size-layout class-size-page">
       <section class="class-size-panel class-size-main-panel">
-        <div class="class-size-kicker">🤖 POKI 要认识今天的小队</div>
+        <div class="class-size-kicker">
+          <PokiCharacter variant="avatar" decorative />
+          POKI 要认识今天的小队
+        </div>
         <h2>今天有几位小朋友来闯关呢？</h2>
         <p>点一下今天到场的人数，POKI 会按人数安排角色和合作任务。</p>
 
@@ -50,7 +54,7 @@ const sizeCards = computed(() =>
       </section>
 
       <aside class="class-size-side-panel">
-        <div class="class-size-poki" aria-hidden="true">🤖</div>
+        <PokiCharacter class="class-size-poki" variant="square" decorative />
         <div class="class-size-strategy-copy">
           <strong>{{ store.strategy.value.title }}</strong>
           <p>{{ store.strategy.value.text }}</p>

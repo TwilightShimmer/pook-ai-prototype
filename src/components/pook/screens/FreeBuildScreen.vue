@@ -42,7 +42,7 @@ function confirmStep() {
         </button>
         <div class="timer-strip"><span></span><strong>10:00</strong></div>
       </section>
-      <AgentStage :text="step.aside" />
+      <AgentStage state="waiting" :text="step.aside" />
     </div>
   </section>
 </template>

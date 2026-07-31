@@ -6,6 +6,7 @@ import { useStepFeedback } from "../../../composables/useStepFeedback";
 import MicroProgress from "../MicroProgress.vue";
 import FeedbackMessage from "../shared/FeedbackMessage.vue";
 import PanelRibbon from "../shared/PanelRibbon.vue";
+import PokiCharacter from "../shared/PokiCharacter.vue";
 import TaskCueCard from "../shared/TaskCueCard.vue";
 
 const store = usePookAppStore();
@@ -64,7 +65,7 @@ watch(
 
         <div class="single-block-stage">
           <div class="single-block-poki">
-            <span aria-hidden="true">🤖</span>
+            <PokiCharacter variant="avatar" decorative />
             <strong>{{ step.aside }}</strong>
           </div>
 

@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { usePookAppStore } from "../../../composables/usePookApp";
+import PokiStatePanel from "../shared/PokiStatePanel.vue";
 
 const store = usePookAppStore();
 const lesson = computed(() => store.currentLesson.value);
@@ -145,22 +146,15 @@ onBeforeUnmount(() => {
         </div>
       </section>
 
-      <aside class="goals-poki-panel">
-        <div class="goals-poki-avatar">🤖</div>
-        <div class="goals-poki-bubble">
-          <span>POKI 说</span>
-          <strong>{{ goalCopy.body }}</strong>
-        </div>
-
-        <div class="goals-knowledge-list">
-          <span>今天用到</span>
-          <b v-for="item in powerCards" :key="item.title">{{ item.title }}</b>
-        </div>
-
+      <PokiStatePanel
+        state="speaking"
+        :message="goalCopy.body"
+        :detail="goalCopy.poki"
+      >
         <button class="cta-button goals-start-button" type="button" @click="store.nextScreen">
           带着问题看视频
         </button>
-      </aside>
+      </PokiStatePanel>
     </div>
   </section>
 </template>

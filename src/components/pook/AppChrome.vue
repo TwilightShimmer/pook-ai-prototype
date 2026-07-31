@@ -18,9 +18,18 @@ const store = usePookAppStore();
       <span>{{ store.currentScreenMeta.value.title }}</span>
     </div>
     <div class="topbar-actions">
-      <button class="team-wallet" type="button" aria-label="切换当前小队" @click="store.openTeamSwitchGate()">
-        <span>{{ store.currentTeam.value.number }}号</span>
-        <strong>{{ store.currentTeam.value.name }}</strong>
+      <button
+        class="team-wallet identity-wallet"
+        :class="{ solo: store.isSoloMode.value }"
+        type="button"
+        :aria-label="store.isSoloMode.value ? '当前登录冒险家' : '当前登录人和上课小队'"
+        @click="!store.isSoloMode.value && store.openTeamSwitchGate()"
+      >
+        <span class="identity-avatar">{{ store.currentViewer.value.avatar }}</span>
+        <span class="identity-copy">
+          <small>{{ store.currentViewer.value.context }}</small>
+          <strong>{{ store.currentViewer.value.name }}</strong>
+        </span>
       </button>
       <div class="gem-wallet" aria-label="当前宝石账户余额">
         <span class="gem-wallet-icon" aria-hidden="true"></span>

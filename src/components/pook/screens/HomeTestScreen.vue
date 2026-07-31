@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import { scienceThemeLessons, scienceThemes } from "../../../data/pookData";
 import { usePookAppStore } from "../../../composables/usePookApp";
+import PokiCharacter from "../shared/PokiCharacter.vue";
 
 const store = usePookAppStore();
 const selectedThemeKey = ref("life");
@@ -130,7 +131,7 @@ function lessonEmoji(lesson) {
               >
                 <button class="home-test-node-core" @click="startThemeLesson(selectedThemeKey, index)">
                   <span v-if="index === 0" class="home-test-node-guide">
-                    <span class="home-test-node-guide-emoji">🤖</span>
+                    <PokiCharacter class="home-test-node-guide-emoji" variant="avatar" decorative />
                     <span>跟 POKI 来</span>
                   </span>
                   <span class="home-test-node-level">{{ lesson.level }}</span>

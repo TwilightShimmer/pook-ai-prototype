@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { meetRoleProfiles } from "../../../data/pookData";
 import { usePookAppStore } from "../../../composables/usePookApp";
+import PokiCharacter from "../shared/PokiCharacter.vue";
 
 const store = usePookAppStore();
 const stage = ref("greet");
@@ -24,7 +25,7 @@ const teamMembers = computed(() =>
     role: meetRoleProfiles[index] ?? meetRoleProfiles[0],
   })),
 );
-const ipPlaceholders = Array.from({ length: 8 }, () => "🤖");
+const ipPlaceholders = Array.from({ length: 8 }, (_, index) => index);
 const currentSpeech = computed(() => {
   if (stage.value === "greet") return `${store.currentTeam.value.name}，POKI 好想你们呀！`;
   if (stage.value === "scan") return "POKI 正在认识今天的小队友。";
@@ -130,7 +131,7 @@ onBeforeUnmount(() => {
             <img class="meet-test-classroom-photo" src="/resources/1.jpeg" alt="课堂画面占位" />
             <div v-if="stage === 'scan'" class="meet-test-scan-line"></div>
             <div v-if="stage === 'greet'" class="meet-greeting-overlay" aria-live="polite">
-              <span aria-hidden="true">🤖</span>
+              <PokiCharacter variant="avatar" decorative />
               <div>
                 <strong>{{ greetingCopy.title }}</strong>
                 <p>{{ greetingCopy.body }}</p>
@@ -158,14 +159,14 @@ onBeforeUnmount(() => {
         </div>
 
         <aside class="meet-test-role-panel" aria-label="识别结果与角色分工">
-          <div class="meet-test-ip-grid" aria-label="POKI IP 形象占位">
+          <div class="meet-test-ip-grid" aria-label="POKI 形象展示">
             <span
-              v-for="(emoji, index) in ipPlaceholders"
+              v-for="index in ipPlaceholders"
               :key="`robot-${index}`"
               :class="{ speaking: index === 0 }"
               aria-hidden="true"
             >
-              {{ emoji }}
+              <PokiCharacter variant="avatar" decorative />
             </span>
           </div>
 

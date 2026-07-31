@@ -22,8 +22,16 @@ export function createPookAppStore(options = {}) {
   const currentScreen = ref("team-select");
   const previousScreen = ref("team-select");
   const classSize = ref(3);
+  const activeMode = ref("team");
   const activeTeamId = ref(null);
-  const hasSelectedTeam = computed(() => Boolean(activeTeamId.value));
+  const activeSoloId = ref(null);
+  const loginIdentity = ref(
+    options.loginIdentity ?? {
+      id: "guest",
+      displayName: "guest",
+      method: "account",
+    },
+  );
   const teamRecords = ref([
     {
       id: "team-1",
@@ -82,6 +90,43 @@ export function createPookAppStore(options = {}) {
       lastPerformance: "还没有课程记录",
     },
   ]);
+  const soloRecords = ref([
+    {
+      id: "solo-root",
+      username: "root",
+      password: "123456",
+      number: "R",
+      name: "root",
+      teacherNote: "单人挑战模式",
+      members: 1,
+      gems: initialGemBalance,
+      stars: 0,
+      xp: 0,
+      completedLessons: 0,
+      redeemedRewardIds: [],
+      collectedLessonCards: [],
+      lastPerformance: "准备开始第一次个人挑战",
+    },
+    {
+      id: "solo-admin",
+      username: "admin",
+      password: "123456",
+      number: "A",
+      name: "admin",
+      teacherNote: "单人挑战模式",
+      members: 1,
+      gems: initialGemBalance,
+      stars: 0,
+      xp: 0,
+      completedLessons: 0,
+      redeemedRewardIds: [],
+      collectedLessonCards: [],
+      lastPerformance: "准备开始第一次个人挑战",
+    },
+  ]);
+  const hasSelectedTeam = computed(() =>
+    activeMode.value === "solo" ? Boolean(activeSoloId.value) : Boolean(activeTeamId.value),
+  );
   const lessonRunId = ref(0);
   const rewardedRunIds = ref([]);
   const rewardedStepIds = ref([]);
@@ -115,11 +160,34 @@ export function createPookAppStore(options = {}) {
     error: "",
   });
 
-  const currentTeam = computed(
-    () => teamRecords.value.find((team) => team.id === activeTeamId.value) ?? teamRecords.value[0],
-  );
+  const currentTeam = computed(() => {
+    if (activeMode.value === "solo") {
+      return soloRecords.value.find((profile) => profile.id === activeSoloId.value) ?? soloRecords.value[0];
+    }
+    return teamRecords.value.find((team) => team.id === activeTeamId.value) ?? teamRecords.value[0];
+  });
+  const isSoloMode = computed(() => activeMode.value === "solo");
+  const currentViewer = computed(() => ({
+    name: isSoloMode.value
+      ? currentTeam.value.name
+      : loginIdentity.value.displayName || loginIdentity.value.id || "访客",
+    context: isSoloMode.value
+      ? "单人挑战"
+      : activeTeamId.value
+        ? currentTeam.value.name
+        : "小队闯关",
+    avatar: isSoloMode.value
+      ? currentTeam.value.number
+      : String(loginIdentity.value.displayName || "访").slice(0, 1).toUpperCase(),
+  }));
 
   function updateCurrentTeam(patch) {
+    if (activeMode.value === "solo") {
+      soloRecords.value = soloRecords.value.map((profile) =>
+        profile.id === currentTeam.value.id ? { ...profile, ...patch } : profile,
+      );
+      return;
+    }
     teamRecords.value = teamRecords.value.map((team) =>
       team.id === currentTeam.value.id ? { ...team, ...patch } : team,
     );
@@ -465,7 +533,7 @@ export function createPookAppStore(options = {}) {
     if (!hasSelectedTeam.value && screenId !== "team-select") {
       currentScreen.value = "team-select";
       previousScreen.value = "team-select";
-      ui.showToast("请先选择本次上课的小队");
+      ui.showToast("请先选择小队或登录个人挑战账号");
       return;
     }
     const isScreenChanged = currentScreen.value !== screenId;
@@ -654,18 +722,45 @@ export function createPookAppStore(options = {}) {
 
   function selectTeam(teamId) {
     if (!teamRecords.value.some((team) => team.id === teamId)) return;
+    activeMode.value = "team";
     activeTeamId.value = teamId;
     ui.showToast(`已切换到 ${currentTeam.value.name}`);
   }
 
   function selectTeamAndEnterHome(teamId) {
     if (!teamRecords.value.some((team) => team.id === teamId)) return;
+    activeMode.value = "team";
     activeTeamId.value = teamId;
     previousScreen.value = "team-select";
     currentScreen.value = "home";
     ui.showPageTransition(`已进入 ${currentTeam.value.name}`);
     showUpdateAnnouncementAfterTransition();
     ui.resetReward();
+  }
+
+  function selectSoloAndEnterHome(username, password) {
+    const normalizedUsername = String(username ?? "").trim();
+    const profile = soloRecords.value.find(
+      (item) => item.username === normalizedUsername && item.password === String(password ?? ""),
+    );
+    if (!profile) {
+      return {
+        ok: false,
+        message: "称呼或闯关暗号不正确，请再试一次。",
+      };
+    }
+    activeMode.value = "solo";
+    activeSoloId.value = profile.id;
+    classSize.value = 1;
+    previousScreen.value = "team-select";
+    currentScreen.value = "home";
+    ui.showPageTransition(`欢迎冒险家 ${profile.name}`);
+    showUpdateAnnouncementAfterTransition();
+    ui.resetReward();
+    return {
+      ok: true,
+      message: `欢迎回来，${profile.name}`,
+    };
   }
 
   function redeemShopReward(reward) {
@@ -700,9 +795,15 @@ export function createPookAppStore(options = {}) {
     classSize,
     strategy,
     activeTeamId,
+    activeSoloId,
+    activeMode,
+    isSoloMode,
     hasSelectedTeam,
     teamRecords,
+    soloRecords,
     currentTeam,
+    currentViewer,
+    loginIdentity,
     gemBalance,
     navState,
     linearFlow,
@@ -768,6 +869,7 @@ export function createPookAppStore(options = {}) {
     selectClassSize,
     selectTeam,
     selectTeamAndEnterHome,
+    selectSoloAndEnterHome,
     setCourseAge: course.setCourseAge,
     setScienceTheme: course.setScienceTheme,
     startBetaLessonByTheme: course.startBetaLessonByTheme,

@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onUnmounted, ref, watch } from "vue";
 import { usePookAppStore } from "../../../composables/usePookApp";
+import PokiCharacter from "../shared/PokiCharacter.vue";
 
 const store = usePookAppStore();
 const lesson = computed(() => store.currentLesson.value);
@@ -110,7 +111,7 @@ function openGemChest() {
               <strong>作品照片</strong>
             </div>
             <div class="growth-card-poki">
-              <span aria-hidden="true">🤖</span>
+              <PokiCharacter variant="avatar" decorative />
               <p>{{ lesson.encouragement }}</p>
             </div>
           </div>

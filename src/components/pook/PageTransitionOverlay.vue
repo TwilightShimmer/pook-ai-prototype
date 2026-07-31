@@ -1,5 +1,6 @@
 <script setup>
 import { usePookAppStore } from "../../composables/usePookApp";
+import PokiCharacter from "./shared/PokiCharacter.vue";
 
 const store = usePookAppStore();
 </script>
@@ -7,7 +8,7 @@ const store = usePookAppStore();
 <template>
   <section v-if="store.pageTransition.visible" class="page-transition-overlay" aria-live="polite">
     <div class="page-transition-card">
-      <span class="page-transition-robot" aria-hidden="true">🤖</span>
+      <PokiCharacter class="page-transition-robot" variant="avatar" decorative />
       <strong>{{ store.pageTransition.message }}</strong>
       <div class="page-transition-dots" aria-hidden="true">
         <span></span>
